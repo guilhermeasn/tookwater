@@ -6,6 +6,11 @@ export default function History() {
     
         <Datepicker
             maxWidth="max-w-lg"
+            maxDate={ new Date() }
+            handleSelect={ (s, e) => console.dir({
+                start: s.toLocaleDateString('pt-BR'),
+                end: e.toLocaleDateString('pt-BR')
+            }) }
         />
 
     </>;

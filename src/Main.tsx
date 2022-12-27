@@ -39,10 +39,11 @@ export default function Main() {
     useEffect(() => {
         setWait(true);
         setTimeout(() => setWait(false), 1000);
-        localStorage.setItem(new Date().toLocaleDateString(), JSON.stringify(history));
+        localStorage.setItem(new Date().toLocaleDateString('pt-BR'), JSON.stringify(history));
     }, [ history ]);
 
     const current : number = history.reduce((p, c) => p + c.v, 0);
+    const porcent : number = Math.round(current * 100 / goal);
 
     function changeGoal() {
         const g = parseInt(prompt('Alterar meta de consumo de água', goal.toString())?.replace(/\D/g, '') ?? '');
@@ -64,8 +65,8 @@ export default function Main() {
         </Flex>
 
         <ProgressBar
-            percentageValue={ Math.round(current * 100 / goal) }
-            color="sky"
+            percentageValue={ porcent }
+            color={ porcent < 40 ? 'red' : porcent < 80 ? 'yellow' : 'green' }
             marginTop="mt-6"
         />
 
