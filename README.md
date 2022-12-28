@@ -4,6 +4,8 @@
 
 Simples WebApp para gerir a sua ingestão diária de água!
 
+![Demostration](tookwater.gif)
+
 **Acesse:** https://guilhermeasn.github.io/tookwater/
 
 ## Autor
