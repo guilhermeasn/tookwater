@@ -2,19 +2,18 @@ name: Build and Deploy
 
 on:
   push:
-    branches: 
-      - master
+    branches: [ master ]
   pull_request:
-    branches: 
-      - master
+    branches: [ master ]
   paths:
     - '**.js'
     - '**.yml'
     - '**.json'
     - 'src/**'
     - 'public/**'
-    - '!.vscode/**'
-    - '!.project/**'
+  paths-ignore:
+    - '.vscode/**'
+    - '.project/**'
 
 # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
