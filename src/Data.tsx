@@ -49,6 +49,8 @@ export default function Data({ update = 0 } : UpdateProps) {
                     value: d.v,
                     icon: CgGlassAlt
                 })) }
+                valueFormatter={ v => `${ v.toLocaleString() } ml` }
+                showAnimation
             />
 
         ) : (
