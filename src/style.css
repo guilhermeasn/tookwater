@@ -1,2 +1,7 @@
 @tailwind components;
 @tailwind utilities;
+
+input[name=water] {
+    text-align: center;
+    font-size: 18px;
+}
