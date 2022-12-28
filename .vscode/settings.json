@@ -4,5 +4,8 @@
         "titleBar.activeBackground": "#3F4222",
         "titleBar.activeForeground": "#FAFAF6"
     },
-    "css.lint.unknownAtRules": "ignore"
+    "css.lint.unknownAtRules": "ignore",
+    "material-icon-theme.folders.associations": {
+        "workflows": "github"
+    }
 }
