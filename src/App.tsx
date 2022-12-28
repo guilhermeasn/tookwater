@@ -83,9 +83,9 @@ export default function Dashboard() {
             <Flex marginTop='-mt-5'>
                 <small>MIT License</small>
                 <small>
-                <a href='http://gn.dev.br/' className='small text-white-50' target='_blank' rel='noreferrer noopener'>
-                    &lt;gn.dev.br/&gt;
-                </a>
+                    <a href='http://gn.dev.br/' className='small text-white-50' target='_blank' rel='noreferrer noopener'>
+                        &lt;gn.dev.br/&gt;
+                    </a>
                 </small>
             </Flex>
 
