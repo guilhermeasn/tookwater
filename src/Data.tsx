@@ -2,7 +2,8 @@ import {
     BarList,
     Callout,
     Dropdown,
-    DropdownItem
+    DropdownItem,
+    Text
 } from "@tremor/react";
 
 import {
@@ -19,17 +20,41 @@ import {
 import { CgGlassAlt } from "react-icons/cg";
 import { UpdateProps } from "./App";
 
+export function getDateByDays(numOfDays : number, date : Date = new Date()) : Date {
+
+    const daysAgo = new Date(date.getTime());
+    daysAgo.setDate(date.getDate() + numOfDays);
+
+    return daysAgo;
+
+}
+
 export default function Data({ update = 0 } : UpdateProps) {
 
-    const defaultDay = new Date().getDay() + 1;
+    const goal : number = parseInt(localStorage.getItem('goal') ?? '2500');
+    const today : number = new Date().getDay() + 1;
+    
+    const [ date, setDate ] = useState<string>('');
     const [ data, setData ] = useState<DataType[]>([]);
-    const loadData = (value : number) => setData(JSON.parse(localStorage.getItem((value - 1).toString()) ?? '[]'));
 
-    useEffect(() => loadData(defaultDay), [ defaultDay, update ]);
+    const current : number = data.reduce((p, c) => p + c.v, 0);
+
+    function loadData(value : number) {
+
+        let calc = value - today;
+        if(calc > 0) calc -= 7;
+
+        setDate(getDateByDays(calc).toLocaleDateString());
+        
+        setData(JSON.parse(localStorage.getItem((value - 1).toString()) ?? '[]'));
+
+    }
+
+    useEffect(() => loadData(today), [ today, update ]);
 
     return <>
     
-        <Dropdown placeholder="Selecione um dia da semana" handleSelect={ loadData } defaultValue={ defaultDay }>
+        <Dropdown placeholder="Selecione um dia da semana" handleSelect={ loadData } defaultValue={ today }>
             { indexDayWeek.map(day => (
                 <DropdownItem
                     key={ day + 1 }
@@ -39,10 +64,27 @@ export default function Data({ update = 0 } : UpdateProps) {
             )) }
         </Dropdown>
 
-        { data.length > 0 ? (
+        <Text color="stone" textAlignment="text-center" marginTop="mt-4">
+            <strong>{ date }</strong>
+        </Text>
+
+        { data.length > 0 ? <>
+
+            <Callout
+                title="Totalização do dia"
+                text={ `
+                    Neste dia você tomou ${ current.toLocaleString() } ml de água.
+                    Foram ${ (current - goal).toLocaleString() } ml a
+                    ${ (current < goal) ? 'menos' : 'mais'} do que
+                    seu objetivo diário de ${ goal.toString() } ml.
+                ` }
+                height="h-12"
+                color={ (current < goal) ? 'red' : 'green' }
+                marginTop="mt-4"
+            />
 
             <BarList
-                marginTop="mt-8"
+                marginTop="mt-4"
                 data={ data.map((d, i) => ({
                     key: i.toString(),
                     name: d.t.toString(),
@@ -53,14 +95,14 @@ export default function Data({ update = 0 } : UpdateProps) {
                 showAnimation
             />
 
-        ) : (
+        </> : (
 
             <Callout
                 title="Nehuma informação salva"
                 text="Neste dia nenhuma água ingerida foi informada"
                 height="h-12"
                 color="yellow"
-                marginTop="mt-8"
+                marginTop="mt-4"
             />
 
         ) }
