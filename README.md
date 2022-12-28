@@ -4,7 +4,7 @@
 
 Simples WebApp para gerir a sua ingestão diária de água!
 
-[<img src='tookwater.gif' style='border: 2px solid #234' />](https://guilhermeasn.github.io/tookwater/)
+[![Demonstration](tookwater.gif)](https://guilhermeasn.github.io/tookwater/)
 
 **Acesse:** https://guilhermeasn.github.io/tookwater/
 
