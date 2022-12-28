@@ -14,7 +14,8 @@ import {
 
 import {
     useState,
-    useEffect
+    useEffect,
+    useCallback
 } from 'react';
 
 import { CgGlassAlt } from "react-icons/cg";
@@ -29,6 +30,10 @@ export function getDateByDays(numOfDays : number, date : Date = new Date()) : Da
 
 }
 
+export function natural(n : number) : number {
+    return (n < 0) ? n * -1 : n;
+}
+
 export default function Data({ update = 0 } : UpdateProps) {
 
     const goal : number = parseInt(localStorage.getItem('goal') ?? '2500');
@@ -39,7 +44,7 @@ export default function Data({ update = 0 } : UpdateProps) {
 
     const current : number = data.reduce((p, c) => p + c.v, 0);
 
-    function loadData(value : number) {
+    const loadData = useCallback((value : number) => {
 
         let calc = value - today;
         if(calc > 0) calc -= 7;
@@ -48,9 +53,9 @@ export default function Data({ update = 0 } : UpdateProps) {
         
         setData(JSON.parse(localStorage.getItem((value - 1).toString()) ?? '[]'));
 
-    }
+    }, [today]);
 
-    useEffect(() => loadData(today), [ today, update ]);
+    useEffect(() => loadData(today), [ today, update, loadData ]);
 
     return <>
     
@@ -71,12 +76,12 @@ export default function Data({ update = 0 } : UpdateProps) {
         { data.length > 0 ? <>
 
             <Callout
-                title="Totalização do dia"
+                title={ (current < goal) ? "Tomou pouca água!" : "Parabéns, concluiu o objetivo!" }
                 text={ `
                     Neste dia você tomou ${ current.toLocaleString() } ml de água.
-                    Foram ${ (current - goal).toLocaleString() } ml a
+                    Foram ${ natural(current - goal).toLocaleString() } ml a
                     ${ (current < goal) ? 'menos' : 'mais'} do que
-                    seu objetivo diário de ${ goal.toString() } ml.
+                    seu objetivo diário de ${ goal.toLocaleString() } ml.
                 ` }
                 height="h-12"
                 color={ (current < goal) ? 'red' : 'green' }
