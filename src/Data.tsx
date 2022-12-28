@@ -1,9 +1,25 @@
-import { BarList, Dropdown, DropdownItem } from "@tremor/react";
-import { Data as DataType, dayweek } from "./Main";
-import { useState, useEffect } from 'react';
-import { CgGlassAlt } from "react-icons/cg";
+import {
+    BarList,
+    Callout,
+    Dropdown,
+    DropdownItem
+} from "@tremor/react";
 
-export default function Data({ update = 0 }) {
+import {
+    Data as DataType,
+    dayweek,
+    indexDayWeek
+} from "./Main";
+
+import {
+    useState,
+    useEffect
+} from 'react';
+
+import { CgGlassAlt } from "react-icons/cg";
+import { UpdateProps } from "./App";
+
+export default function Data({ update = 0 } : UpdateProps) {
 
     const defaultDay = new Date().getDay() + 1;
     const [ data, setData ] = useState<DataType[]>([]);
@@ -14,24 +30,38 @@ export default function Data({ update = 0 }) {
     return <>
     
         <Dropdown placeholder="Selecione um dia da semana" handleSelect={ loadData } defaultValue={ defaultDay }>
-            { [1, 2, 3, 4, 5, 6, 7].map(day => (
+            { indexDayWeek.map(day => (
                 <DropdownItem
-                    key={ day }
-                    value={ day }
-                    text={ dayweek(day - 1) }
+                    key={ day + 1 }
+                    value={ day + 1 }
+                    text={ dayweek(day) }
                 />
             )) }
         </Dropdown>
 
-        <BarList
-            marginTop="mt-8"
-            data={ data.map((d, i) => ({
-                key: i.toString(),
-                name: d.t.toString(),
-                value: d.v,
-                icon: CgGlassAlt
-            })) }
-        />
+        { data.length > 0 ? (
+
+            <BarList
+                marginTop="mt-8"
+                data={ data.map((d, i) => ({
+                    key: i.toString(),
+                    name: d.t.toString(),
+                    value: d.v,
+                    icon: CgGlassAlt
+                })) }
+            />
+
+        ) : (
+
+            <Callout
+                title="Nehuma informação salva"
+                text="Neste dia nenhuma água ingerida foi informada"
+                height="h-12"
+                color="yellow"
+                marginTop="mt-8"
+            />
+
+        ) }
 
     </>;
 

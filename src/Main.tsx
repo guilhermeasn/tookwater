@@ -21,6 +21,8 @@ import {
     useEffect
 } from 'react';
 
+import { UpdateProps } from './App';
+
 export type Data = {
     t: string;  // time
     v: number;  // value
@@ -46,7 +48,9 @@ export function dayweek(value : number) : string {
     
 }
 
-export default function Main({ onUpdated = () => {} }) {
+export const indexDayWeek = [ 0, 1, 2, 3, 4, 5, 6 ];
+
+export default function Main({ update = 0, onUpdate = () => {} } : UpdateProps) {
 
     const [ wait, setWait ] = useState<boolean>(false);
     const [ goal, setGoal ] = useState<number>(parseInt(localStorage.getItem('goal') ?? '2500'));
@@ -54,8 +58,17 @@ export default function Main({ onUpdated = () => {} }) {
 
     const [ history, setHistory] = useState<History>({
         dayweek: new Date().getDay(),
-        dataset: JSON.parse(localStorage.getItem(new Date().getDay().toString().toString()) || '[]')
+        dataset: []
     });
+
+    useEffect(() => {
+
+        setHistory({
+            dayweek: new Date().getDay(),
+            dataset: JSON.parse(localStorage.getItem(new Date().getDay().toString().toString()) || '[]')
+        });
+
+    }, [ update ]);
 
     useEffect(() => localStorage.setItem('goal', goal.toString()), [ goal ]);
     useEffect(() => localStorage.setItem('water', water), [ water ]);
@@ -75,7 +88,7 @@ export default function Main({ onUpdated = () => {} }) {
         setHistory({ dayweek, dataset });
         localStorage.setItem(dayweek.toString(), JSON.stringify(dataset));
 
-        onUpdated();
+        onUpdate();
 
     };
 
@@ -94,7 +107,7 @@ export default function Main({ onUpdated = () => {} }) {
 
         setHistory({ dayweek, dataset });
 
-        onUpdated();
+        onUpdate();
 
     }
 
@@ -107,7 +120,7 @@ export default function Main({ onUpdated = () => {} }) {
 
         if(!isNaN(g)) {
             setGoal(g);
-            onUpdated();
+            onUpdate();
         }
         
     }
@@ -139,7 +152,7 @@ export default function Main({ onUpdated = () => {} }) {
             <TextInput
                 name='water'
                 value={ water ? parseInt(water).toLocaleString().toString() : '' }
-                onChange={ i => setWater(i.currentTarget.value.replace(/\D/g, '').substring(0,4) ) }
+                onChange={ i => setWater(i.currentTarget.value.replace(/\D/g, '').substring(0,3) ) }
                 placeholder="Digite a quantidade ..."
                 maxWidth="max-w-none"
                 disabled={ wait }

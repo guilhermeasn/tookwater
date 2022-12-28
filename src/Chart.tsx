@@ -5,19 +5,36 @@ import {
 
 import {
     Data,
-    dayweek
+    dayweek,
+    indexDayWeek
 } from './Main';
 
-import { AreaChart } from "@tremor/react";
+import {
+    AreaChart,
+    Button,
+    Divider,
+    Flex
+} from "@tremor/react";
 
-export default function Chart({ update = 0 }) {
+import { UpdateProps } from './App';
+
+export default function Chart({ update = 0, onUpdate = () => {} } : UpdateProps) {
 
     const goal : number = parseInt(localStorage.getItem('goal') ?? '2500');
 
     const [ histories, setHistories ] = useState<number[]>([]);
-    useEffect(() => setHistories([0, 1, 2, 3, 4, 5, 6].map(dayweek => JSON.parse(localStorage.getItem(dayweek.toString()) ?? '[]')).map(d => d.reduce((p : number, c : Data) => p + c.v, 0))), [ update ]);
+    useEffect(() => setHistories(indexDayWeek.map(dayweek => JSON.parse(localStorage.getItem(dayweek.toString()) ?? '[]')).map(d => d.reduce((p : number, c : Data) => p + c.v, 0))), [ update ]);
 
-    return (
+    function reset() {
+        // eslint-disable-next-line no-restricted-globals
+        if(confirm('Tem certeza que deseja apagar tudo?')) {
+            indexDayWeek.forEach(dayweek => localStorage.removeItem(dayweek.toString()));
+            onUpdate();
+        }
+
+    }
+
+    return <>
     
         <AreaChart
             categories={[ 'Objetivo', 'Ingerido' ]}
@@ -28,9 +45,19 @@ export default function Chart({ update = 0 }) {
                 Objetivo: goal,
                 Ingerido: sum
             }))}
-            valueFormatter={ v => `${ v } ml` }
+            valueFormatter={ v => `${ v.toLocaleString() } ml` }
         />
 
-    );
+        <Divider />
+
+        <Flex justifyContent='justify-center'>
+            <Button
+                text='Resetar Informações'
+                onClick={ reset }
+                color='red'
+            />
+        </Flex>
+
+    </>;
 
 }
