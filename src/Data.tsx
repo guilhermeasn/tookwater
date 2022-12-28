@@ -39,18 +39,16 @@ export default function Data({ update = 0 } : UpdateProps) {
     const goal : number = parseInt(localStorage.getItem('goal') ?? '2500');
     const today : number = new Date().getDay() + 1;
     
-    const [ date, setDate ] = useState<string>('');
+    const [ date, setDate ] = useState<number>(0);
     const [ data, setData ] = useState<DataType[]>([]);
 
     const current : number = data.reduce((p, c) => p + c.v, 0);
 
     const loadData = useCallback((value : number) => {
 
-        let calc = value - today;
-        if(calc > 0) calc -= 7;
+        const calc = value - today;
+        setDate(calc > 0 ? calc - 7 : calc);
 
-        setDate(getDateByDays(calc).toLocaleDateString());
-        
         setData(JSON.parse(localStorage.getItem((value - 1).toString()) ?? '[]'));
 
     }, [today]);
@@ -70,16 +68,17 @@ export default function Data({ update = 0 } : UpdateProps) {
         </Dropdown>
 
         <Text color="stone" textAlignment="text-center" marginTop="mt-4">
-            <strong>{ date }</strong>
+            <strong>{ getDateByDays(date).toLocaleDateString() }</strong>
         </Text>
 
         { data.length > 0 ? <>
 
             <Callout
-                title={ (current < goal) ? "Tomou pouca água!" : "Parabéns, concluiu o objetivo!" }
+                title={ (date === 0) ? "Dia atual" : (current < goal) ? "Tomou pouca água!" : "Parabéns, concluiu o objetivo!" }
                 text={ `
-                    Neste dia você tomou ${ current.toLocaleString() } ml de água.
-                    Foram ${ natural(current - goal).toLocaleString() } ml a
+                    ${ (date === 0) ? 'Hoje' : 'Neste dia' } você tomou
+                    ${ current.toLocaleString() } ml de água.
+                    São ${ natural(current - goal).toLocaleString() } ml a
                     ${ (current < goal) ? 'menos' : 'mais'} do que
                     seu objetivo diário de ${ goal.toLocaleString() } ml.
                 ` }
