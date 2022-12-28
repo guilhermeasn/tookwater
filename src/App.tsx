@@ -3,6 +3,8 @@ import {
     Title,
     Text,
     ColGrid,
+    Flex,
+    Divider
 } from '@tremor/react';
 
 import Main from './Main';
@@ -18,14 +20,34 @@ export type UpdateProps = {
 
 export default function Dashboard() {
 
+    const classSection = 'bg-slate-50 m-0 px-6 sm:px-12 md:px-18 lg:px-24';
     const [ update, setUpdate ] = useState<number>(0);
 
-    return (
+    return <>
 
-        <main className='bg-slate-50 p-6 sm:px-12 md:px-18 lg:px-24'>
+        <header className={ classSection }>
 
-            <Title>Took Water</Title>
-            <Text>Gestão diária de ingestão de água</Text>
+            <Flex justifyContent='justify-start' alignItems='items-center'>
+
+                <img
+                    className='m-4'
+                    src='./logo192.png'
+                    title='tookwater'
+                    alt='tookwater'
+                    width={ 64 }
+                    height={ 64 }
+                />
+
+                <div>
+                    <Title>Took Water</Title>
+                    <Text>Gestão diária de ingestão de água</Text>
+                </div>
+                
+            </Flex>
+
+        </header>
+
+        <main className={ classSection }>
 
             <ColGrid numColsMd={ 2 } gapX="gap-x-6" gapY="gap-y-6" marginTop="mt-8">
 
@@ -54,6 +76,21 @@ export default function Dashboard() {
 
         </main>
 
-    );
+        <footer className={ classSection + ' text-slate-500' }>
+
+            <Divider />
+
+            <Flex marginTop='-mt-5'>
+                <small>MIT License</small>
+                <small>
+                <a href='http://gn.dev.br/' className='small text-white-50' target='_blank' rel='noreferrer noopener'>
+                    &lt;gn.dev.br/&gt;
+                </a>
+                </small>
+            </Flex>
+
+        </footer>
+
+    </>;
 
 }

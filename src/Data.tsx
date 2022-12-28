@@ -83,7 +83,6 @@ export default function Data({ update = 0 } : UpdateProps) {
                     ${ (current < goal) ? 'menos' : 'mais'} do que
                     seu objetivo diário de ${ goal.toLocaleString() } ml.
                 ` }
-                height="h-12"
                 color={ (current < goal) ? 'red' : 'green' }
                 marginTop="mt-4"
             />
@@ -105,7 +104,6 @@ export default function Data({ update = 0 } : UpdateProps) {
             <Callout
                 title="Nehuma informação salva"
                 text="Neste dia nenhuma água ingerida foi informada"
-                height="h-12"
                 color="yellow"
                 marginTop="mt-4"
             />

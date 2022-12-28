@@ -5,3 +5,7 @@ input[name=water] {
     text-align: center;
     font-size: 18px;
 }
+
+a {
+    text-decoration: none;
+}
