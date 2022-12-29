@@ -21,10 +21,15 @@ import {
     useEffect
 } from 'react';
 
+import {
+    getDateByDays
+} from './support/helpers';
+
 import type {
-    Data,
+    Week,
     History,
-    UpdateProps
+    UpdateProps,
+    Month
 } from './support/types';
 
 export default function Main({ update = 0, onUpdate = () => {} } : UpdateProps) {
@@ -50,17 +55,27 @@ export default function Main({ update = 0, onUpdate = () => {} } : UpdateProps) 
     useEffect(() => localStorage.setItem('goal', goal.toString()), [ goal ]);
     useEffect(() => localStorage.setItem('water', water), [ water ]);
 
-    function add(data : Data) {
+    function add(data : Week) {
 
         setWait(true);
         setTimeout(() => setWait(false), 1000);
 
         const dayweek : number = new Date().getDay();
 
-        if(parseInt(localStorage.getItem('next') ?? '') === dayweek) localStorage.setItem(dayweek.toString(), '[]');
+        if(parseInt(localStorage.getItem('next') ?? '') === dayweek) {
+
+            const month : Month  = JSON.parse(localStorage.getItem('month') ?? '[]');
+            const sum   : number = JSON.parse(localStorage.getItem(dayweek.toString()) ?? '[]').reduce((p : number, c : Week) => p + c.v, 0);
+            const day   : number = getDateByDays(dayweek * - 1).getDate();
+
+            localStorage.setItem('month', JSON.stringify({ ...month, [day]: sum } as Month));
+            localStorage.setItem(dayweek.toString(), '[]');
+
+        }
+
         localStorage.setItem('next', (dayweek === 6 ? 0 : dayweek + 1).toString());
 
-        const dataset : Data[] = [ data, ...(JSON.parse(localStorage.getItem(dayweek.toString()) ?? '[]')) ];
+        const dataset : Week[] = [ data, ...(JSON.parse(localStorage.getItem(dayweek.toString()) ?? '[]')) ];
 
         setHistory({ dayweek, dataset });
         localStorage.setItem(dayweek.toString(), JSON.stringify(dataset));
@@ -74,7 +89,7 @@ export default function Main({ update = 0, onUpdate = () => {} } : UpdateProps) 
         setWait(true);
         setTimeout(() => setWait(false), 1000);
 
-        let dataset : Data[] = JSON.parse(localStorage.getItem(dayweek.toString()) ?? '[]');
+        let dataset : Week[] = JSON.parse(localStorage.getItem(dayweek.toString()) ?? '[]');
         dataset.splice(index, 1);
 
         localStorage.setItem(dayweek.toString(), JSON.stringify(dataset));

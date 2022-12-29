@@ -24,7 +24,7 @@ import {
 } from "./support/helpers";
 
 import type {
-    Data as DataType,
+    Week,
     UpdateProps
 } from "./support/types";
 
@@ -34,7 +34,7 @@ export default function Data({ update = 0 } : UpdateProps) {
     const today : number = new Date().getDay() + 1;
     
     const [ date, setDate ] = useState<number>(0);
-    const [ data, setData ] = useState<DataType[]>([]);
+    const [ data, setData ] = useState<Week[]>([]);
 
     const current : number = data.reduce((p, c) => p + c.v, 0);
 

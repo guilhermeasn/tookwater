@@ -3,12 +3,16 @@ export type UpdateProps = {
     onUpdate ?: () => void;
 }
 
-export type Data = {
+export type Week = {
     t: string;  // time
     v: number;  // value
 };
 
 export type History = {
     dayweek: number;
-    dataset: Data[]
+    dataset: Week[]
+}
+
+export type Month = {
+    [day : number] : number
 }

@@ -13,6 +13,18 @@ export function dayweek(value : number) : string {
     
 }
 
+export function getLastDays(last : number = 30) : Date[] {
+    
+    const days : Date[] = [];
+
+    for(let c = 0; c < last; c++) {
+        days.push(getDateByDays(c === 0 ? 0 : c * - 1));
+    }
+
+    return days;
+
+}
+
 export function indexDayWeek(init : number = 0) : number[] {
 
     let index : number[] = [];

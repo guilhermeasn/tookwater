@@ -7,6 +7,8 @@ import {
     AreaChart,
     Button,
     Divider,
+    Dropdown,
+    DropdownItem,
     Flex
 } from "@tremor/react";
 
@@ -16,7 +18,7 @@ import {
 } from './support/helpers';
 
 import type {
-    Data,
+    Week,
     UpdateProps
 } from './support/types';
 
@@ -28,7 +30,7 @@ export default function Chart({ update = 0, onUpdate = () => {} } : UpdateProps)
 
     useEffect(() => setHistories(indexDayWeek(new Date().getDay() + 1).map(dayweek => ({
         day: dayweek,
-        sum: JSON.parse(localStorage.getItem(dayweek.toString()) ?? '[]').reduce((p : number, c : Data) => p + c.v, 0)
+        sum: JSON.parse(localStorage.getItem(dayweek.toString()) ?? '[]').reduce((p : number, c : Week) => p + c.v, 0)
     }))), [ update ]);
 
     function reset() {
@@ -41,8 +43,14 @@ export default function Chart({ update = 0, onUpdate = () => {} } : UpdateProps)
     }
 
     return <>
+
+        <Dropdown defaultValue='week'>
+            <DropdownItem text='Últimos sete dias' value='week' />
+            <DropdownItem text='Últimos trinta dias' value='month' />
+        </Dropdown>
     
         <AreaChart
+            marginTop='mt-4'
             categories={[ 'Objetivo', 'Ingerido' ]}
             colors={[ 'sky', 'orange' ]}
             dataKey='dayweek'
