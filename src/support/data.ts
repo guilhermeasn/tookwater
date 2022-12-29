@@ -6,10 +6,11 @@ import type {
 } from "./types";
 
 import {
-    formatDateString, getDateByDays
+    formatDateString,
+    getDateByDays
 } from "./helpers";
 
-const maxDataSet = 30;
+const maxDataSet = 45;
 
 export function getSettings() : Settings {
 

@@ -1,3 +1,8 @@
+import type {
+    CardProps,
+    DataSet
+} from '../support/types';
+
 import {
     useState,
     useEffect
@@ -17,11 +22,11 @@ import {
     sum
 } from '../support/helpers';
 
-import { getFillDataSet, getSettings, resetDataSet } from '../support/data';
-
-import type {
-    CardProps, DataSet
-} from '../support/types';
+import {
+    getFillDataSet,
+    getSettings,
+    resetDataSet
+} from '../support/data';
 
 export default function Chart({ update = 0, onUpdate = () => {} } : CardProps) {
 

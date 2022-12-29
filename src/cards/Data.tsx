@@ -1,3 +1,10 @@
+import type {
+    CardProps,
+    DataSet,
+    DateString,
+    Day
+} from "../support/types";
+
 import {
     BarList,
     Block,
@@ -15,7 +22,11 @@ import {
     CgGlassAlt
 } from "react-icons/cg";
 
-import { getDataSet, getDay, getSettings } from "../support/data";
+import {
+    getDataSet,
+    getDay,
+    getSettings
+} from "../support/data";
 
 import {
     dayWeek,
@@ -23,13 +34,6 @@ import {
     natural,
     sum
 } from "../support/helpers";
-
-import type {
-    CardProps,
-    DataSet,
-    DateString,
-    Day
-} from "../support/types";
 
 export default function Data({ update = 0 } : CardProps) {
 
@@ -41,7 +45,10 @@ export default function Data({ update = 0 } : CardProps) {
     const day : Day | null = date ? getDay(date) : null;
     const sumDay : number = day ? sum(day) : 0;
     
-    useEffect(() => setData(getDataSet().reverse()), [ update ]);
+    useEffect(() => {
+        setData(getDataSet().reverse());
+        if(day && day.data.length === 0) setDate(undefined);
+    }, [ update, day ]);
 
     return <>
     

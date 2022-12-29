@@ -1,3 +1,9 @@
+import type {
+    CardProps,
+    Day,
+    Settings
+} from '../support/types';
+
 import {
     Text,
     Flex,
@@ -25,12 +31,6 @@ import {
     dayWeek,
     sum
 } from '../support/helpers';
-
-import type {
-    CardProps,
-    Day,
-    Settings
-} from '../support/types';
 
 import {
     getDay,
