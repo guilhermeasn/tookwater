@@ -23,14 +23,14 @@ import {
 
 import {
     getDateByDays
-} from './support/helpers';
+} from '../support/helpers';
 
 import type {
     Week,
     History,
     UpdateProps,
     Month
-} from './support/types';
+} from '../support/types';
 
 export default function Main({ update = 0, onUpdate = () => {} } : UpdateProps) {
 

@@ -7,9 +7,9 @@ import {
     Divider
 } from '@tremor/react';
 
-import Main from './Main';
-import Data from './Data';
-import Chart from './Chart';
+import Main from './cards/Main';
+import Data from './cards/Data';
+import Chart from './cards/Chart';
 
 import { useState } from 'react';
 
