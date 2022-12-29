@@ -9,7 +9,7 @@ import {
 
 import Main from './cards/Main';
 import Data from './cards/Data';
-// import Chart from './cards/Chart';
+import Chart from './cards/Chart';
 
 import { useState } from 'react';
 
@@ -63,10 +63,10 @@ export default function Dashboard() {
             </ColGrid>
 
             <Card marginTop='mt-8' shadow>
-                {/* <Chart
+                <Chart
                     update={ update }
                     onUpdate={ () => setUpdate(update => update + 1)}
-                /> */}
+                />
             </Card>
 
         </main>

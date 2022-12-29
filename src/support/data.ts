@@ -6,14 +6,11 @@ import type {
 } from "./types";
 
 import {
-    formatDateString
+    formatDateString, getDateByDays
 } from "./helpers";
 
 const maxDataSet = 30;
 
-/**
- * Obtem os dados goal (meta de consumo de água) e water (quantidade de inserção de água)
- */
 export function getSettings() : Settings {
 
     const storage = localStorage.getItem('settings');
@@ -62,9 +59,23 @@ export function getDataSet() : DataSet {
     return JSON.parse(localStorage.getItem('dataset') ?? '[]') as DataSet;
 }
 
-function saveDay(day : Day) : void {
+export function getFillDataSet(days : number) : DataSet {
 
-    console.log(day);
+    const dataSet : DataSet = [];
+
+    for(let c = days * -1; c < 0; c++) {
+        dataSet.push(getDay(formatDateString(getDateByDays(c + 1))));
+    }
+
+    return dataSet;
+
+}
+
+export function resetDataSet() : void {
+    localStorage.setItem('dataset', '[]');
+}
+
+function saveDay(day : Day) : void {
     
     const dataSet : DataSet = getDataSet();
     const index : number | null = dataSet.findIndex(d => d.date === day.date) ?? null;
@@ -77,6 +88,5 @@ function saveDay(day : Day) : void {
 }
 
 function saveDataSet(dataset : DataSet) : void {
-    console.log(dataset);
     localStorage.setItem('dataset', JSON.stringify(dataset));
 }

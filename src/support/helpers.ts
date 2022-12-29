@@ -30,33 +30,6 @@ export function dayWeek(date : DateString) : string {
     
 }
 
-export function getLastDays(last : number = 30) : Date[] {
-    
-    const days : Date[] = [];
-
-    for(let c = 0; c < last; c++) {
-        days.push(getDateByDays(c === 0 ? 0 : c * - 1));
-    }
-
-    return days;
-
-}
-
-export function indexDayWeek(init : number = 0) : number[] {
-
-    let index : number[] = [];
-
-    if(init < 0 || init > 6) init = 0;
-
-    for(let c = 0; c < 7; c++) {
-        const value = c + init;
-        index.push(value > 6 ? value - 7 : value);
-    }
-
-    return index;
-
-}
-
 export function getDateByDays(numOfDays : number, date : Date = new Date()) : Date {
 
     const daysAgo = new Date(date.getTime());

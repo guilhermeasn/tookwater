@@ -1,78 +1,79 @@
-// import {
-//     useState,
-//     useEffect
-// } from 'react';
+import {
+    useState,
+    useEffect
+} from 'react';
 
-// import {
-//     AreaChart,
-//     Button,
-//     Divider,
-//     Dropdown,
-//     DropdownItem,
-//     Flex
-// } from "@tremor/react";
+import {
+    AreaChart,
+    Button,
+    Divider,
+    Dropdown,
+    DropdownItem,
+    Flex
+} from "@tremor/react";
 
-// import {
-//     dayweek,
-//     indexDayWeek
-// } from '../support/helpers';
+import {
+    dayWeek,
+    sum
+} from '../support/helpers';
 
-// import type {
-//     Week,
-//     UpdateProps
-// } from '../support/types';
+import { getFillDataSet, getSettings, resetDataSet } from '../support/data';
 
-// export default function Chart({ update = 0, onUpdate = () => {} } : UpdateProps) {
+import type {
+    CardProps, DataSet
+} from '../support/types';
 
-//     const goal : number = parseInt(localStorage.getItem('goal') ?? '2500');
+export default function Chart({ update = 0, onUpdate = () => {} } : CardProps) {
 
-//     const [ histories, setHistories ] = useState<Array<{ day: number; sum: any }>>([]);
+    const { goal } = getSettings();
 
-//     useEffect(() => setHistories(indexDayWeek(new Date().getDay() + 1).map(dayweek => ({
-//         day: dayweek,
-//         sum: JSON.parse(localStorage.getItem(dayweek.toString()) ?? '[]').reduce((p : number, c : Week) => p + c.v, 0)
-//     }))), [ update ]);
+    const [ mode, setMode ] = useState<'w'|'m'>('w');
+    const [ data, setData ] = useState<DataSet>([]);
 
-//     function reset() {
-//         // eslint-disable-next-line no-restricted-globals
-//         if(confirm('Tem certeza que deseja apagar tudo?')) {
-//             indexDayWeek().forEach(dayweek => localStorage.removeItem(dayweek.toString()));
-//             onUpdate();
-//         }
+    useEffect(() => setData(getFillDataSet(mode === 'w' ? 7 : 30)), [ mode, update ]);
 
-//     }
+    function reset() {
 
-//     return <>
+        // eslint-disable-next-line no-restricted-globals
+        if(confirm('Tem certeza que deseja apagar tudo?')) {
 
-//         <Dropdown defaultValue='week'>
-//             <DropdownItem text='Últimos sete dias' value='week' />
-//             <DropdownItem text='Últimos trinta dias' value='month' />
-//         </Dropdown>
+            resetDataSet();
+            onUpdate();
+            
+        }
+
+    }
+
+    return <>
+
+        <Dropdown defaultValue={ mode } handleSelect={ setMode }>
+            <DropdownItem text='Últimos sete dias' value='w' />
+            <DropdownItem text='Últimos trinta dias' value='m' />
+        </Dropdown>
     
-//         <AreaChart
-//             marginTop='mt-4'
-//             categories={[ 'Objetivo', 'Ingerido' ]}
-//             colors={[ 'sky', 'orange' ]}
-//             dataKey='dayweek'
-//             data={histories.map(({ day, sum }) => ({
-//                 dayweek: dayweek(day).substring(0, 3),
-//                 Objetivo: goal,
-//                 Ingerido: sum
-//             }))}
-//             valueFormatter={ v => `${ v.toLocaleString() } ml` }
-//         />
+        <AreaChart
+            marginTop='mt-4'
+            categories={[ 'Objetivo', 'Ingerido' ]}
+            colors={[ 'sky', 'orange' ]}
+            dataKey='dayweek'
+            data={data.map(day => ({
+                dayweek: mode === 'w' ? dayWeek(day.date).substring(0, 3) : day.date.replace(/.*(\d{2}$)/, '$1'),
+                Objetivo: goal,
+                Ingerido: sum(day)
+            }))}
+            valueFormatter={ v => `${ v.toLocaleString() } ml` }
+        />
 
-//         <Divider />
+        <Divider />
 
-//         <Flex justifyContent='justify-center'>
-//             <Button
-//                 text='Resetar Informações'
-//                 onClick={ reset }
-//                 color='red'
-//             />
-//         </Flex>
+        <Flex justifyContent='justify-center'>
+            <Button
+                text='Resetar Informações'
+                onClick={ reset }
+                color='red'
+            />
+        </Flex>
 
-//     </>;
+    </>;
 
-// }
-export{}
+}
