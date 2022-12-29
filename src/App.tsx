@@ -44,7 +44,7 @@ export default function Dashboard() {
 
         <main className={ classSection }>
 
-            <ColGrid numColsMd={ 2 } gapX="gap-x-6" gapY="gap-y-6" marginTop="mt-8">
+            <ColGrid numColsMd={ 2 } gapX="gap-x-8" gapY="gap-y-8" marginTop="mt-8">
 
                 <Card shadow>
                     <Main
