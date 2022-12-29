@@ -1,13 +1,19 @@
 {
+
     "workbench.colorCustomizations": {
         "activityBar.background": "#2D2F19",
         "titleBar.activeBackground": "#3F4222",
         "titleBar.activeForeground": "#FAFAF6"
     },
+
     "css.lint.unknownAtRules": "ignore",
+
     "material-icon-theme.folders.associations": {
         "workflows": "github",
         "logotype": "images",
-        "support": "helper"
+        "support": "helper",
+        "modals": "components",
+        "cards": "components"
     }
+    
 }
