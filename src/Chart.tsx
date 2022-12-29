@@ -47,7 +47,7 @@ export default function Chart({ update = 0, onUpdate = () => {} } : UpdateProps)
             colors={[ 'sky', 'orange' ]}
             dataKey='dayweek'
             data={histories.map(({ day, sum }) => ({
-                dayweek: dayweek(day).charAt(0),
+                dayweek: dayweek(day).substring(0, 3),
                 Objetivo: goal,
                 Ingerido: sum
             }))}
