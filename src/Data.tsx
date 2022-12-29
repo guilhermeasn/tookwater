@@ -6,29 +6,27 @@ import {
     Text
 } from "@tremor/react";
 
-import type { Data as DataType } from "./Main";
-
 import {
     useState,
     useEffect,
     useCallback
 } from 'react';
 
-import { CgGlassAlt } from "react-icons/cg";
-import { dayweek, indexDayWeek, UpdateProps } from "./App";
+import {
+    CgGlassAlt
+} from "react-icons/cg";
 
-export function getDateByDays(numOfDays : number, date : Date = new Date()) : Date {
+import {
+    dayweek,
+    getDateByDays,
+    indexDayWeek,
+    natural
+} from "./helpers";
 
-    const daysAgo = new Date(date.getTime());
-    daysAgo.setDate(date.getDate() + numOfDays);
-
-    return daysAgo;
-
-}
-
-export function natural(n : number) : number {
-    return (n < 0) ? n * -1 : n;
-}
+import type {
+    Data as DataType,
+    UpdateProps
+} from "./types";
 
 export default function Data({ update = 0 } : UpdateProps) {
 

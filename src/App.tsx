@@ -13,41 +13,6 @@ import Chart from './Chart';
 
 import { useState } from 'react';
 
-export type UpdateProps = {
-    update   ?: number;
-    onUpdate ?: () => void;
-}
-
-export function dayweek(value : number) : string {
-
-    switch(value) {
-        case 0:  return 'Domingo';
-        case 1:  return 'Segunda-feira';
-        case 2:  return 'Terça-feira';
-        case 3:  return 'Quarta-feira';
-        case 4:  return 'Quinta-feira';
-        case 5:  return 'Sexta-feira';
-        case 6:  return 'Sábado';
-        default: return ' ... ';
-    }
-    
-}
-
-export function indexDayWeek(init : number = 0) : number[] {
-
-    let index : number[] = [];
-
-    if(init < 0 || init > 6) init = 0;
-
-    for(let c = 0; c < 7; c++) {
-        const value = c + init;
-        index.push(value > 6 ? value - 7 : value);
-    }
-
-    return index;
-
-}
-
 export default function Dashboard() {
 
     const classSection = 'bg-slate-50 m-0 px-6 sm:px-12 md:px-18 lg:px-24';

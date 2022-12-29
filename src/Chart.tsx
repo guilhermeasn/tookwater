@@ -3,8 +3,6 @@ import {
     useEffect
 } from 'react';
 
-import type { Data } from './Main';
-
 import {
     AreaChart,
     Button,
@@ -12,7 +10,15 @@ import {
     Flex
 } from "@tremor/react";
 
-import { dayweek, indexDayWeek, UpdateProps } from './App';
+import {
+    dayweek,
+    indexDayWeek
+} from './helpers';
+
+import type {
+    Data,
+    UpdateProps
+} from './types';
 
 export default function Chart({ update = 0, onUpdate = () => {} } : UpdateProps) {
 

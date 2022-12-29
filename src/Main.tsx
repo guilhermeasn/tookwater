@@ -21,17 +21,11 @@ import {
     useEffect
 } from 'react';
 
-import { UpdateProps } from './App';
-
-export type Data = {
-    t: string;  // time
-    v: number;  // value
-};
-
-export type History = {
-    dayweek: number;
-    dataset: Data[]
-}
+import type {
+    Data,
+    History,
+    UpdateProps
+} from './types';
 
 export default function Main({ update = 0, onUpdate = () => {} } : UpdateProps) {
 
