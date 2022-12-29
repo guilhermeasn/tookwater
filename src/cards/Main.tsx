@@ -111,7 +111,7 @@ export default function Main({ update = 0, onUpdate = () => {} } : CardProps) {
 
             <TextInput
                 name='water'
-                value={ settings.water !== 0 ? settings.water.toLocaleString().toString() : '' }
+                value={ settings.water !== 0 ? settings.water.toLocaleString() : '' }
                 onChange={ i => changeWater(i.currentTarget.value) }
                 placeholder="Digite a quantidade ..."
                 maxWidth="max-w-none"

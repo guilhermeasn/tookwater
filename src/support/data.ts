@@ -79,7 +79,7 @@ export function resetDataSet() : void {
 function saveDay(day : Day) : void {
     
     const dataSet : DataSet = getDataSet();
-    const index : number | null = dataSet.findIndex(d => d.date === day.date) ?? null;
+    const index : number = dataSet.findIndex(d => d.date === day.date);
 
     if(index >= 0) dataSet[index] = day;
     else if(dataSet.push(day) > maxDataSet) dataSet.shift();
