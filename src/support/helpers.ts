@@ -1,6 +1,19 @@
-export function dayweek(value : number) : string {
+import type {
+    DateString,
+    Day
+} from "./types";
 
-    switch(value) {
+export function formatDateString(date : Date) : DateString {
+    return date.toISOString().replace(/T.*/, '') as DateString;
+}
+
+export function sum(day : Day) : number {
+    return day.data.reduce((p, c) => p + c.v, 0);
+}
+
+export function dayWeek(date : DateString) : string {
+
+    switch(new Date(date).getDay()) {
         case 0:  return 'Domingo';
         case 1:  return 'Segunda-feira';
         case 2:  return 'Terça-feira';

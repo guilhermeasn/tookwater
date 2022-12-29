@@ -11,7 +11,9 @@
     "material-icon-theme.folders.associations": {
         "workflows": "github",
         "logotype": "images",
-        "support": "helper"
+        "support": "helper",
+        "modals": "components",
+        "cards": "components"
     }
     
 }

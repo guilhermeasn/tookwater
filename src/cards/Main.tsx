@@ -22,99 +22,66 @@ import {
 } from 'react';
 
 import {
-    getDateByDays
+    sum
 } from '../support/helpers';
 
 import type {
-    Week,
-    History,
-    UpdateProps,
-    Month
+    CardProps,
+    Day,
+    Settings
 } from '../support/types';
 
-export default function Main({ update = 0, onUpdate = () => {} } : UpdateProps) {
+import {
+    getDay,
+    getSettings,
+    insert,
+    remove,
+    saveSettings
+} from '../support/data';
 
+export default function Main({ update = 0, onUpdate = () => {} } : CardProps) {
+
+    const [ day, setDay ] = useState<Day>(getDay());
     const [ wait, setWait ] = useState<boolean>(false);
-    const [ goal, setGoal ] = useState<number>(parseInt(localStorage.getItem('goal') ?? '2500'));
-    const [ water, setWater ] = useState<string>(localStorage.getItem('water') ?? '');
+    const [ settings, setSettings ] = useState<Settings>(getSettings());
 
-    const [ history, setHistory] = useState<History>({
-        dayweek: new Date().getDay(),
-        dataset: []
-    });
+    const sumDay  : number = sum(day);
+    const porcent : number = Math.round(sumDay * 100 / settings.goal);
 
-    useEffect(() => {
+    useEffect(() => setDay(getDay()), [ update ]);
+    useEffect(() => saveSettings(settings), [ settings ]);
 
-        setHistory({
-            dayweek: new Date().getDay(),
-            dataset: JSON.parse(localStorage.getItem(new Date().getDay().toString().toString()) || '[]')
-        });
-
-    }, [ update ]);
-
-    useEffect(() => localStorage.setItem('goal', goal.toString()), [ goal ]);
-    useEffect(() => localStorage.setItem('water', water), [ water ]);
-
-    function add(data : Week) {
-
-        setWait(true);
-        setTimeout(() => setWait(false), 1000);
-
-        const dayweek : number = new Date().getDay();
-
-        if(parseInt(localStorage.getItem('next') ?? '') === dayweek) {
-
-            const month : Month  = JSON.parse(localStorage.getItem('month') ?? '[]');
-            const sum   : number = JSON.parse(localStorage.getItem(dayweek.toString()) ?? '[]').reduce((p : number, c : Week) => p + c.v, 0);
-            const day   : number = getDateByDays(dayweek * - 1).getDate();
-
-            localStorage.setItem('month', JSON.stringify({ ...month, [day]: sum } as Month));
-            localStorage.setItem(dayweek.toString(), '[]');
-
-        }
-
-        localStorage.setItem('next', (dayweek === 6 ? 0 : dayweek + 1).toString());
-
-        const dataset : Week[] = [ data, ...(JSON.parse(localStorage.getItem(dayweek.toString()) ?? '[]')) ];
-
-        setHistory({ dayweek, dataset });
-        localStorage.setItem(dayweek.toString(), JSON.stringify(dataset));
-
-        onUpdate();
-
-    };
-
-    function del(index : number, dayweek: number) {
-
-        setWait(true);
-        setTimeout(() => setWait(false), 1000);
-
-        let dataset : Week[] = JSON.parse(localStorage.getItem(dayweek.toString()) ?? '[]');
-        dataset.splice(index, 1);
-
-        localStorage.setItem(dayweek.toString(), JSON.stringify(dataset));
-
-        dayweek = new Date().getDay();
-        dataset = JSON.parse(localStorage.getItem(dayweek.toString()) ?? '[]');
-
-        setHistory({ dayweek, dataset });
-
-        onUpdate();
-
+    function changeWater(value : string) {
+        const water : number = parseInt(value.replace(/\D/g, '').substring(0,3))
+        setSettings({ ...settings, water : isNaN(water) ? 0 : water });
     }
-
-    const current : number = history.dataset.reduce((p, c) => p + c.v, 0);
-    const porcent : number = Math.round(current * 100 / goal);
 
     function changeGoal() {
 
-        const g = parseInt(prompt('Alterar meta de consumo de água', goal.toString())?.replace(/\D/g, '') ?? '');
+        const goal = parseInt(prompt('Alterar meta de consumo de água', settings.goal.toString())?.replace(/\D/g, '') ?? '');
 
-        if(!isNaN(g)) {
-            setGoal(g);
+        if(!isNaN(goal)) {
+            setSettings({ ...settings, goal });
             onUpdate();
         }
         
+    }
+
+    function pause() {
+        setWait(true);
+        setTimeout(() => setWait(false), 1000);
+    }
+
+    function addWater() {
+        insert(settings.water);
+        onUpdate();
+        pause();
+    };
+
+    function delWater(index : number) {
+        remove(day.date, index);
+        onUpdate();
+        pause();
     }
 
     return <>
@@ -123,10 +90,10 @@ export default function Main({ update = 0, onUpdate = () => {} } : UpdateProps) 
         </Text>
 
         <Flex justifyContent="justify-center" spaceX="space-x-1" alignItems="items-baseline">
-            <Metric>{ current.toLocaleString() } ml</Metric>
+            <Metric>{ sumDay.toLocaleString() } ml</Metric>
             <Text>/</Text>
             <ButtonInline
-                text={ goal.toLocaleString() + ' ml' }
+                text={ settings.goal.toLocaleString() + ' ml' }
                 onClick={ changeGoal }
                 disabled={ wait }
             />
@@ -142,8 +109,8 @@ export default function Main({ update = 0, onUpdate = () => {} } : UpdateProps) 
 
             <TextInput
                 name='water'
-                value={ water ? parseInt(water).toLocaleString().toString() : '' }
-                onChange={ i => setWater(i.currentTarget.value.replace(/\D/g, '').substring(0,3) ) }
+                value={ settings.water !== 0 ? settings.water.toLocaleString().toString() : '' }
+                onChange={ i => changeWater(i.currentTarget.value) }
                 placeholder="Digite a quantidade ..."
                 maxWidth="max-w-none"
                 disabled={ wait }
@@ -157,8 +124,8 @@ export default function Main({ update = 0, onUpdate = () => {} } : UpdateProps) 
                     icon={ CgGlassAlt }
                     importance="primary"
                     text="Adicionar"
-                    onClick={() => add({ t: new Date().toLocaleTimeString(), v: parseInt(water) })}
-                    disabled={ !water }
+                    onClick={ addWater }
+                    disabled={ settings.water === 0 }
                     loading={ wait }
                 />
 
@@ -166,7 +133,7 @@ export default function Main({ update = 0, onUpdate = () => {} } : UpdateProps) 
 
         </div>
 
-        { history.dataset.length > 0 && <>
+        { day.data.length > 0 && <>
 
             <Flex>
                 <Text><Bold>Horário</Bold></Text>
@@ -174,7 +141,7 @@ export default function Main({ update = 0, onUpdate = () => {} } : UpdateProps) 
             </Flex>
 
             <List>
-                { history.dataset.map((data, index) => (
+                { day.data.map((data, index) => (
                     <ListItem key={ index }>
                         <Flex justifyContent='justify-start'>
                             <CgTime className='mr-1' />
@@ -182,7 +149,12 @@ export default function Main({ update = 0, onUpdate = () => {} } : UpdateProps) 
                         </Flex>
                         <Flex justifyContent='justify-end'>
                             <span className='mr-1'>{ data.v }&nbsp;ml</span>
-                            <ButtonInline color='red' text='X' onClick={ () => del(index, history.dayweek) } disabled={ wait } />
+                            <ButtonInline
+                                color='red'
+                                text='X'
+                                onClick={ () => delWater(index) }
+                                disabled={ wait }
+                            />
                         </Flex>
                     </ListItem>
                 )) }
