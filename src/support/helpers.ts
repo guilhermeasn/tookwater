@@ -13,7 +13,7 @@ export function sum(day : Day) : number {
 
 export function dayWeek(date : DateString) : string {
 
-    switch(new Date(date).getDay()) {
+    switch(new Date(`${ date }T12:00:00.000Z`).getDay()) {
         case 0:  return 'Domingo';
         case 1:  return 'Segunda-feira';
         case 2:  return 'Terça-feira';

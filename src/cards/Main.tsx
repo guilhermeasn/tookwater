@@ -22,6 +22,7 @@ import {
 } from 'react';
 
 import {
+    dayWeek,
     sum
 } from '../support/helpers';
 
@@ -87,6 +88,7 @@ export default function Main({ update = 0, onUpdate = () => {} } : CardProps) {
     return <>
 
         <Text textAlignment='text-center'>
+            { dayWeek(day.date) }
         </Text>
 
         <Flex justifyContent="justify-center" spaceX="space-x-1" alignItems="items-baseline">
