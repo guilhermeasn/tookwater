@@ -25,7 +25,7 @@ import type {
     Data,
     History,
     UpdateProps
-} from './types';
+} from './support/types';
 
 export default function Main({ update = 0, onUpdate = () => {} } : UpdateProps) {
 

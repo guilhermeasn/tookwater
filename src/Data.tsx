@@ -21,12 +21,12 @@ import {
     getDateByDays,
     indexDayWeek,
     natural
-} from "./helpers";
+} from "./support/helpers";
 
 import type {
     Data as DataType,
     UpdateProps
-} from "./types";
+} from "./support/types";
 
 export default function Data({ update = 0 } : UpdateProps) {
 

@@ -13,12 +13,12 @@ import {
 import {
     dayweek,
     indexDayWeek
-} from './helpers';
+} from './support/helpers';
 
 import type {
     Data,
     UpdateProps
-} from './types';
+} from './support/types';
 
 export default function Chart({ update = 0, onUpdate = () => {} } : UpdateProps) {
 
