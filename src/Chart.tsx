@@ -3,11 +3,7 @@ import {
     useEffect
 } from 'react';
 
-import {
-    Data,
-    dayweek,
-    indexDayWeek
-} from './Main';
+import type { Data } from './Main';
 
 import {
     AreaChart,
@@ -16,19 +12,23 @@ import {
     Flex
 } from "@tremor/react";
 
-import { UpdateProps } from './App';
+import { dayweek, indexDayWeek, UpdateProps } from './App';
 
 export default function Chart({ update = 0, onUpdate = () => {} } : UpdateProps) {
 
     const goal : number = parseInt(localStorage.getItem('goal') ?? '2500');
 
-    const [ histories, setHistories ] = useState<number[]>([]);
-    useEffect(() => setHistories(indexDayWeek.map(dayweek => JSON.parse(localStorage.getItem(dayweek.toString()) ?? '[]')).map(d => d.reduce((p : number, c : Data) => p + c.v, 0))), [ update ]);
+    const [ histories, setHistories ] = useState<Array<{ day: number; sum: any }>>([]);
+
+    useEffect(() => setHistories(indexDayWeek(new Date().getDay() + 1).map(dayweek => ({
+        day: dayweek,
+        sum: JSON.parse(localStorage.getItem(dayweek.toString()) ?? '[]').reduce((p : number, c : Data) => p + c.v, 0)
+    }))), [ update ]);
 
     function reset() {
         // eslint-disable-next-line no-restricted-globals
         if(confirm('Tem certeza que deseja apagar tudo?')) {
-            indexDayWeek.forEach(dayweek => localStorage.removeItem(dayweek.toString()));
+            indexDayWeek().forEach(dayweek => localStorage.removeItem(dayweek.toString()));
             onUpdate();
         }
 
@@ -40,8 +40,8 @@ export default function Chart({ update = 0, onUpdate = () => {} } : UpdateProps)
             categories={[ 'Objetivo', 'Ingerido' ]}
             colors={[ 'sky', 'orange' ]}
             dataKey='dayweek'
-            data={histories.map((sum, i) => ({
-                dayweek: dayweek(i).charAt(0),
+            data={histories.map(({ day, sum }) => ({
+                dayweek: dayweek(day).charAt(0),
                 Objetivo: goal,
                 Ingerido: sum
             }))}

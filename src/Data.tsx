@@ -6,11 +6,7 @@ import {
     Text
 } from "@tremor/react";
 
-import {
-    Data as DataType,
-    dayweek,
-    indexDayWeek
-} from "./Main";
+import type { Data as DataType } from "./Main";
 
 import {
     useState,
@@ -19,7 +15,7 @@ import {
 } from 'react';
 
 import { CgGlassAlt } from "react-icons/cg";
-import { UpdateProps } from "./App";
+import { dayweek, indexDayWeek, UpdateProps } from "./App";
 
 export function getDateByDays(numOfDays : number, date : Date = new Date()) : Date {
 
@@ -58,7 +54,7 @@ export default function Data({ update = 0 } : UpdateProps) {
     return <>
     
         <Dropdown placeholder="Selecione um dia da semana" handleSelect={ loadData } defaultValue={ today }>
-            { indexDayWeek.map(day => (
+            { indexDayWeek().map(day => (
                 <DropdownItem
                     key={ day + 1 }
                     value={ day + 1 }

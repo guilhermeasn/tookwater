@@ -33,23 +33,6 @@ export type History = {
     dataset: Data[]
 }
 
-export function dayweek(value : number) : string {
-
-    switch(value) {
-        case 0:  return 'Domingo';
-        case 1:  return 'Segunda-feira';
-        case 2:  return 'Terça-feira';
-        case 3:  return 'Quarta-feira';
-        case 4:  return 'Quinta-feira';
-        case 5:  return 'Sexta-feira';
-        case 6:  return 'Sábado';
-        default: return ' ... ';
-    }
-    
-}
-
-export const indexDayWeek = [ 0, 1, 2, 3, 4, 5, 6 ];
-
 export default function Main({ update = 0, onUpdate = () => {} } : UpdateProps) {
 
     const [ wait, setWait ] = useState<boolean>(false);
@@ -128,7 +111,6 @@ export default function Main({ update = 0, onUpdate = () => {} } : UpdateProps) 
     return <>
 
         <Text textAlignment='text-center'>
-            { dayweek(history.dayweek) }
         </Text>
 
         <Flex justifyContent="justify-center" spaceX="space-x-1" alignItems="items-baseline">
