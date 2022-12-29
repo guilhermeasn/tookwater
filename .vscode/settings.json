@@ -7,7 +7,7 @@
     "css.lint.unknownAtRules": "ignore",
     "material-icon-theme.folders.associations": {
         "workflows": "github",
-        "logotype": "project",
+        "logotype": "images",
         "support": "helper"
     }
 }
