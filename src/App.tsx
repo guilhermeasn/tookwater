@@ -8,7 +8,7 @@ import {
 } from '@tremor/react';
 
 import Main from './cards/Main';
-// import Data from './cards/Data';
+import Data from './cards/Data';
 // import Chart from './cards/Chart';
 
 import { useState } from 'react';
@@ -54,10 +54,10 @@ export default function Dashboard() {
                 </Card>
                 
                 <Card shadow>
-                    {/* <Data
+                    <Data
                         update={ update }
                         onUpdate={ () => setUpdate(update => update + 1)}
-                    /> */}
+                    />
                 </Card>
 
             </ColGrid>

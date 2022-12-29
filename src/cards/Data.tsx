@@ -1,109 +1,99 @@
-// import {
-//     BarList,
-//     Callout,
-//     Dropdown,
-//     DropdownItem,
-//     Text
-// } from "@tremor/react";
+import {
+    BarList,
+    Block,
+    Callout,
+    Dropdown,
+    DropdownItem
+} from "@tremor/react";
 
-// import {
-//     useState,
-//     useEffect,
-//     useCallback
-// } from 'react';
+import {
+    useState,
+    useEffect
+} from 'react';
 
-// import {
-//     CgGlassAlt
-// } from "react-icons/cg";
+import {
+    CgGlassAlt
+} from "react-icons/cg";
 
-// import {
-//     dayweek,
-//     getDateByDays,
-//     indexDayWeek,
-//     natural
-// } from "../support/helpers";
+import { getDataSet, getDay, getSettings } from "../support/data";
 
-// import type {
-//     Week,
-//     UpdateProps
-// } from "../support/types";
+import {
+    dayWeek,
+    nativeDate,
+    natural,
+    sum
+} from "../support/helpers";
 
-// export default function Data({ update = 0 } : UpdateProps) {
+import type {
+    CardProps,
+    DataSet,
+    DateString,
+    Day
+} from "../support/types";
 
-//     const goal : number = parseInt(localStorage.getItem('goal') ?? '2500');
-//     const today : number = new Date().getDay() + 1;
+export default function Data({ update = 0 } : CardProps) {
+
+    const { goal } = getSettings();
+
+    const [ data, setData ] = useState<DataSet>([]);
+    const [ date, setDate ] = useState<DateString>();
+
+    const day : Day | null = date ? getDay(date) : null;
+    const sumDay : number = day ? sum(day) : 0;
     
-//     const [ date, setDate ] = useState<number>(0);
-//     const [ data, setData ] = useState<Week[]>([]);
+    useEffect(() => setData(getDataSet().reverse()), [ update ]);
 
-//     const current : number = data.reduce((p, c) => p + c.v, 0);
-
-//     const loadData = useCallback((value : number) => {
-
-//         const calc = value - today;
-//         setDate(calc > 0 ? calc - 7 : calc);
-
-//         setData(JSON.parse(localStorage.getItem((value - 1).toString()) ?? '[]'));
-
-//     }, [today]);
-
-//     useEffect(() => loadData(today), [ today, update, loadData ]);
-
-//     return <>
+    return <>
     
-//         <Dropdown placeholder="Selecione um dia da semana" handleSelect={ loadData } defaultValue={ today }>
-//             { indexDayWeek().map(day => (
-//                 <DropdownItem
-//                     key={ day + 1 }
-//                     value={ day + 1 }
-//                     text={ dayweek(day) }
-//                 />
-//             )) }
-//         </Dropdown>
+        <Dropdown placeholder="Selecione um dia" handleSelect={ setDate }>
+            { data.map((day, index) => (
+                <DropdownItem
+                    key={ index }
+                    value={ day.date }
+                    text={ nativeDate(day.date).toLocaleDateString() + ' - ' + dayWeek(day.date) }
+                />
+            )) }
+        </Dropdown>
 
-//         <Text color="stone" textAlignment="text-center" marginTop="mt-4">
-//             <strong>{ getDateByDays(date).toLocaleDateString() }</strong>
-//         </Text>
+        <Block marginTop="mt-4">
 
-//         { data.length > 0 ? <>
+            { day ? <>
 
-//             <Callout
-//                 title={ (date === 0) ? "Dia atual" : (current < goal) ? "Tomou pouca água!" : "Parabéns, concluiu o objetivo!" }
-//                 text={ `
-//                     ${ (date === 0) ? 'Hoje' : 'Neste dia' } você tomou
-//                     ${ current.toLocaleString() } ml de água.
-//                     São ${ natural(current - goal).toLocaleString() } ml a
-//                     ${ (current < goal) ? 'menos' : 'mais'} do que
-//                     seu objetivo diário de ${ goal.toLocaleString() } ml.
-//                 ` }
-//                 color={ (current < goal) ? 'red' : 'green' }
-//                 marginTop="mt-4"
-//             />
+                <Callout
+                    title={ goal > sumDay ? "Tomou pouca água!" : "Parabéns, concluiu o objetivo!" }
+                    color={ goal > sumDay ? 'red' : 'green' }
+                    text={ `
+                        Neste dia você tomou ${ sumDay.toLocaleString() } ml de água.
+                        São ${ natural(sumDay - goal).toLocaleString() } ml a
+                        ${ goal > sumDay ? 'menos' : 'mais'} do que
+                        seu objetivo diário de ${ goal.toLocaleString() } ml.
+                    ` }
+                />
 
-//             <BarList
-//                 marginTop="mt-4"
-//                 data={ data.map((d, i) => ({
-//                     key: i.toString(),
-//                     name: d.t.toString(),
-//                     value: d.v,
-//                     icon: CgGlassAlt
-//                 })) }
-//                 valueFormatter={ v => `${ v.toLocaleString() } ml` }
-//                 showAnimation
-//             />
+                <BarList
+                    marginTop="mt-4"
+                    data={ day.data.map((d, i) => ({
+                        key: i.toString(),
+                        name: d.t.toString(),
+                        value: d.v,
+                        icon: CgGlassAlt
+                    })) }
+                    valueFormatter={ v => `${ v.toLocaleString() } ml` }
+                    showAnimation
+                />
 
-//         </> : (
+            </> : (
 
-//             <Callout
-//                 title="Nehuma informação salva"
-//                 text="Neste dia nenhuma água ingerida foi informada"
-//                 color="yellow"
-//                 marginTop="mt-4"
-//             />
+                <Callout
+                    title="Nenhum dia selecionado"
+                    text="Selecione uma data para visualizar o seu histórico"
+                    color="yellow"
+                />
 
-//         ) }
+            ) }
 
-//     </>;
+        </Block>
 
-// }
-export{}
+    </>;
+
+}
