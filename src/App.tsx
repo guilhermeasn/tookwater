@@ -12,6 +12,7 @@ import Data from './cards/Data';
 import Chart from './cards/Chart';
 
 import { useState } from 'react';
+import { GoLogoGithub } from 'react-icons/go';
 
 export default function Dashboard() {
 
@@ -76,7 +77,11 @@ export default function Dashboard() {
             <Divider />
 
             <Flex marginTop='-mt-5'>
-                <small>MIT License</small>
+                <small>
+                    <a href='https://github.com/guilhermeasn/tookwater' className='small text-white-50' target='_blank' rel='noreferrer noopener'>
+                        <GoLogoGithub />
+                    </a>
+                </small>
                 <small>
                     <a href='http://gn.dev.br/' className='small text-white-50' target='_blank' rel='noreferrer noopener'>
                         &lt;gn.dev.br/&gt;
