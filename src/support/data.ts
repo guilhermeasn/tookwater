@@ -19,11 +19,13 @@ export function getSettings() : Settings {
         water: 0
     }
 
-    try{
+    try {
 
         const storage = localStorage.getItem('settings');
-        if(typeof storage !== 'object') throw new Error('Settings is not Object');
-        return storage ? JSON.parse(storage) : defaultSettings;
+        const settings = storage ? JSON.parse(storage) : defaultSettings;
+        if(typeof settings !== 'object' || !('goal' in settings)) throw new Error('Settings is not Object');
+
+        return settings;
 
     } catch(err) {
 
