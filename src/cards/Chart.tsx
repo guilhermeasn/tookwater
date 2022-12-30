@@ -32,10 +32,10 @@ export default function Chart({ update = 0, onUpdate = () => {} } : CardProps) {
 
     const { goal } = getSettings();
 
-    const [ mode, setMode ] = useState<'w'|'m'>('w');
+    const [ days, setDays ] = useState<number>(7);
     const [ data, setData ] = useState<DataSet>([]);
 
-    useEffect(() => setData(getFillDataSet(mode === 'w' ? 7 : 30)), [ mode, update ]);
+    useEffect(() => setData(getFillDataSet(days)), [ days, update ]);
 
     function reset() {
 
@@ -51,9 +51,11 @@ export default function Chart({ update = 0, onUpdate = () => {} } : CardProps) {
 
     return <>
 
-        <Dropdown defaultValue={ mode } handleSelect={ setMode }>
-            <DropdownItem text='Últimos sete dias' value='w' />
-            <DropdownItem text='Últimos trinta dias' value='m' />
+        <Dropdown defaultValue={ days } handleSelect={ setDays }>
+            <DropdownItem text='Últimos três dias'   value={ 3 }  />
+            <DropdownItem text='Últimos sete dias'   value={ 7 }  />
+            <DropdownItem text='Últimos quinze dias' value={ 15 } />
+            <DropdownItem text='Últimos trinta dias' value={ 30 } />
         </Dropdown>
     
         <AreaChart
@@ -62,7 +64,7 @@ export default function Chart({ update = 0, onUpdate = () => {} } : CardProps) {
             colors={[ 'sky', 'orange' ]}
             dataKey='dayweek'
             data={data.map(day => ({
-                dayweek: mode === 'w' ? dayWeek(day.date).substring(0, 3) : day.date.replace(/.*(\d{2}$)/, '$1'),
+                dayweek: days < 10 ? dayWeek(day.date).substring(0, 3) : day.date.replace(/.*(\d{2}$)/, '$1'),
                 Objetivo: goal,
                 Ingerido: sum(day)
             }))}
