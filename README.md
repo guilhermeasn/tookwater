@@ -6,7 +6,11 @@ Simples WebApp para gerir a sua ingestão diária de água!
 
 [![Demonstration](tookwater.gif)](https://guilhermeasn.github.io/tookwater/)
 
-**Acesse:** https://guilhermeasn.github.io/tookwater/
+## Instalar
+
+Para instalar no seu smartphone como um app acesse com seu navegador [https://guilhermeasn.github.io/tookwater/](https://guilhermeasn.github.io/tookwater/) e depois menu do navegador encontre a opção de instalação do web app.
+
+![install](install.png)
 
 ## Autor
 
