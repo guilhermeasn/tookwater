@@ -14,11 +14,23 @@ const maxDataSet = 45;
 
 export function getSettings() : Settings {
 
-    const storage = localStorage.getItem('settings');
-
-    return storage ? JSON.parse(storage) : {
+    const defaultSettings : Settings = {
         goal: 2500,
         water: 0
+    }
+
+    try{
+
+        const storage = localStorage.getItem('settings');
+        if(typeof storage !== 'object') throw new Error('Settings is not Object');
+        return storage ? JSON.parse(storage) : defaultSettings;
+
+    } catch(err) {
+
+        console.error(err);
+        saveSettings(defaultSettings);
+        return defaultSettings;
+
     }
 
 }
@@ -57,7 +69,21 @@ export function getDay(date : DateString = formatDateString(new Date())) : Day {
 }
 
 export function getDataSet() : DataSet {
-    return JSON.parse(localStorage.getItem('dataset') ?? '[]') as DataSet;
+
+    try {
+
+        const dataSet : DataSet = JSON.parse(localStorage.getItem('dataset') ?? '[]') as DataSet;
+        if(!Array.isArray(dataSet)) throw new Error('DataSet is not Array');
+        return dataSet;
+
+    } catch(err) {
+
+        console.error(err);
+        saveDataSet([]);
+        return [];
+
+    }
+
 }
 
 export function getFillDataSet(days : number) : DataSet {
