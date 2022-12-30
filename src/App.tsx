@@ -13,6 +13,7 @@ import Chart from './cards/Chart';
 
 import { useState } from 'react';
 import { GoLogoGithub } from 'react-icons/go';
+import DevIcon from './support/gndevbr';
 
 export default function Dashboard() {
 
@@ -76,15 +77,15 @@ export default function Dashboard() {
 
             <Divider />
 
-            <Flex marginTop='-mt-5' alignItems='items-stretch'>
+            <Flex marginTop='-mt-8'>
                 <span>
-                    <a href='https://github.com/guilhermeasn/tookwater' className='text-white-50' target='_blank' rel='noreferrer noopener'>
-                        <GoLogoGithub size={ 35 } />
+                    <a href='https://github.com/guilhermeasn/tookwater' title='github' className='text-white-50' target='_blank' rel='noreferrer noopener'>
+                        <GoLogoGithub fill='#24292f' size={ 40 } />
                     </a>
                 </span>
                 <small>
-                    <a href='http://gn.dev.br/' className='small text-white-50' target='_blank' rel='noreferrer noopener'>
-                        &lt;gn.dev.br/&gt;
+                    <a href='http://gn.dev.br/' title='gn.dev.br' className='small text-white-50' target='_blank' rel='noreferrer noopener'>
+                        <DevIcon fill='#041820' width={ 80 } />
                     </a>
                 </small>
             </Flex>
