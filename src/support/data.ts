@@ -22,15 +22,17 @@ export function getSettings() : Settings {
     try {
 
         const storage = localStorage.getItem('settings');
-        const settings = storage ? JSON.parse(storage) : defaultSettings;
-        if(typeof settings !== 'object' || !('goal' in settings)) throw new Error('Settings is not Object');
+        const settings  = storage ? JSON.parse(storage) : defaultSettings;
+        
+        if(typeof settings !== 'object' || !('goal' in settings)) {
+            throw new Error('Settings is not Object');
+        }
 
         return settings;
 
     } catch(err) {
 
         console.error(err);
-        saveSettings(defaultSettings);
         return defaultSettings;
 
     }
