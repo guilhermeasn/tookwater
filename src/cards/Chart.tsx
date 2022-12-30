@@ -29,6 +29,10 @@ import {
     resetDataSet
 } from '../support/data';
 
+import {
+    GrLineChart
+} from "react-icons/gr";
+
 export default function Chart({ update = 0, onUpdate = () => {} } : CardProps) {
 
     const { goal } = getSettings();
@@ -52,7 +56,7 @@ export default function Chart({ update = 0, onUpdate = () => {} } : CardProps) {
 
     return <>
 
-        <Dropdown defaultValue={ days } handleSelect={ setDays }>
+        <Dropdown defaultValue={ days } handleSelect={ setDays } icon={ GrLineChart }>
             <DropdownItem text='Últimos três dias'   value={ 3 }  />
             <DropdownItem text='Últimos sete dias'   value={ 7 }  />
             <DropdownItem text='Últimos quinze dias' value={ 15 } />

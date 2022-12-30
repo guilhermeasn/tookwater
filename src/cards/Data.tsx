@@ -19,7 +19,8 @@ import {
 } from 'react';
 
 import {
-    CgGlassAlt
+    CgGlassAlt,
+    CgCalendar
 } from "react-icons/cg";
 
 import {
@@ -53,7 +54,7 @@ export default function Data({ update = 0 } : CardProps) {
 
     return <>
     
-        <Dropdown placeholder="Selecione um dia" handleSelect={ setDate }>
+        <Dropdown placeholder="Selecione um dia" handleSelect={ setDate } icon={ CgCalendar }>
             { data.map((day, index) => (
                 <DropdownItem
                     key={ index }
