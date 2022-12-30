@@ -77,11 +77,11 @@ export default function Dashboard() {
             <Divider />
 
             <Flex marginTop='-mt-5'>
-                <small>
-                    <a href='https://github.com/guilhermeasn/tookwater' className='small text-white-50' target='_blank' rel='noreferrer noopener'>
-                        <GoLogoGithub />
+                <span>
+                    <a href='https://github.com/guilhermeasn/tookwater' className='text-white-50' target='_blank' rel='noreferrer noopener'>
+                        <GoLogoGithub size={ 20 } />
                     </a>
-                </small>
+                </span>
                 <small>
                     <a href='http://gn.dev.br/' className='small text-white-50' target='_blank' rel='noreferrer noopener'>
                         &lt;gn.dev.br/&gt;
