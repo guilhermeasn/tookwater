@@ -83,7 +83,7 @@ export function getDataSet() : DataSet {
     } catch(err) {
 
         console.error(err);
-        saveDataSet([]);
+        resetDataSet();
         return [];
 
     }
@@ -103,7 +103,7 @@ export function getFillDataSet(days : number) : DataSet {
 }
 
 export function resetDataSet() : void {
-    localStorage.setItem('dataset', '[]');
+    saveDataSet([]);
 }
 
 function saveDay(day : Day) : void {
