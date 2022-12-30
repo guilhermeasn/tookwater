@@ -23,6 +23,7 @@ import {
 } from '../support/helpers';
 
 import {
+    getDataSet,
     getFillDataSet,
     getSettings,
     resetDataSet
@@ -35,7 +36,7 @@ export default function Chart({ update = 0, onUpdate = () => {} } : CardProps) {
     const [ days, setDays ] = useState<number>(7);
     const [ data, setData ] = useState<DataSet>([]);
 
-    useEffect(() => setData(getFillDataSet(days)), [ days, update ]);
+    useEffect(() => setData(days > 0 ? getFillDataSet(days) : getDataSet()), [ days, update ]);
 
     function reset() {
 
@@ -56,6 +57,7 @@ export default function Chart({ update = 0, onUpdate = () => {} } : CardProps) {
             <DropdownItem text='Últimos sete dias'   value={ 7 }  />
             <DropdownItem text='Últimos quinze dias' value={ 15 } />
             <DropdownItem text='Últimos trinta dias' value={ 30 } />
+            <DropdownItem text='Dias com informação' value={ -1 } />
         </Dropdown>
     
         <AreaChart
@@ -64,7 +66,7 @@ export default function Chart({ update = 0, onUpdate = () => {} } : CardProps) {
             colors={[ 'sky', 'orange' ]}
             dataKey='dayweek'
             data={data.map(day => ({
-                dayweek: days < 10 ? dayWeek(day.date).substring(0, 3) : day.date.replace(/.*(\d{2}$)/, '$1'),
+                dayweek: data.length < 10 ? dayWeek(day.date).substring(0, 3) : day.date.replace(/.*(\d{2}$)/, '$1'),
                 Objetivo: goal,
                 Ingerido: sum(day)
             }))}
