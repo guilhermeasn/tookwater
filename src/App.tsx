@@ -76,10 +76,10 @@ export default function Dashboard() {
 
             <Divider />
 
-            <Flex marginTop='-mt-5'>
+            <Flex marginTop='-mt-5' alignItems='items-stretch'>
                 <span>
                     <a href='https://github.com/guilhermeasn/tookwater' className='text-white-50' target='_blank' rel='noreferrer noopener'>
-                        <GoLogoGithub size={ 20 } />
+                        <GoLogoGithub size={ 35 } />
                     </a>
                 </span>
                 <small>
