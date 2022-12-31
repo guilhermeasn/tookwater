@@ -1,6 +1,20 @@
 export type CardProps = {
     update   ?: number;
     onUpdate ?: () => void;
+    onAction ?: Action;
+}
+
+export type Action = (
+    type : 'confirm' | 'prompt',
+    payload : Pick<ModalProps, 'content' | 'onConfirm'>
+) => void;
+
+export type ModalProps = {
+    show      : boolean;
+    title     : string;
+    content   : string;
+    onHide    : () => void;
+    onConfirm : (...args : any) => void;
 }
 
 export type Settings = {

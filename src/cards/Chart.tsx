@@ -33,7 +33,7 @@ import {
     GrLineChart
 } from "react-icons/gr";
 
-export default function Chart({ update = 0, onUpdate = () => {} } : CardProps) {
+export default function Chart({ update = 0, onUpdate = () => {}, onAction = () => {} } : CardProps) {
 
     const { goal } = getSettings();
 
@@ -43,15 +43,13 @@ export default function Chart({ update = 0, onUpdate = () => {} } : CardProps) {
     useEffect(() => setData(days > 0 ? getFillDataSet(days) : getDataSet()), [ days, update ]);
 
     function reset() {
-
-        // eslint-disable-next-line no-restricted-globals
-        if(confirm('Tem certeza que deseja apagar tudo?')) {
-
-            resetDataSet();
-            onUpdate();
-            
-        }
-
+        onAction('confirm', {
+            content: 'Tem certeza que deseja apagar tudo?',
+            onConfirm: () => {
+                resetDataSet();
+                onUpdate();
+            }
+        });
     }
 
     return <>
