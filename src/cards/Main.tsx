@@ -40,7 +40,7 @@ import {
     saveSettings
 } from '../support/data';
 
-export default function Main({ update = 0, onUpdate = () => {} } : CardProps) {
+export default function Main({ update = 0, onUpdate = () => {}, onAction = () => {} } : CardProps) {
 
     const [ day, setDay ] = useState<Day>(getDay());
     const [ wait, setWait ] = useState<boolean>(false);
@@ -58,14 +58,27 @@ export default function Main({ update = 0, onUpdate = () => {} } : CardProps) {
     }
 
     function changeGoal() {
+        onAction('prompt', {
 
-        const goal = parseInt(prompt('Alterar meta de consumo de água', settings.goal.toString())?.replace(/\D/g, '') ?? '');
+            title: 'Alterar meta de consumo de água',
+            content: 'Dica: para a maioria das pessoas o consumo ideal de água é 35 ml por kg de peso corporal',
+            placeholder: 'Digite a quantidade ...',
+            value: settings.goal.toString(),
 
-        if(!isNaN(goal)) {
-            setSettings({ ...settings, goal });
-            onUpdate();
-        }
-        
+            onChange: value => value.replace(/\D/g, ''),
+
+            onConfirm: value => {
+
+                const goal = parseInt(value);
+
+                if(!isNaN(goal)) {
+                    setSettings({ ...settings, goal });
+                    onUpdate();
+                }
+
+            }
+            
+        });        
     }
 
     function pause() {
@@ -79,10 +92,15 @@ export default function Main({ update = 0, onUpdate = () => {} } : CardProps) {
         pause();
     };
 
-    function delWater(index : number) {
-        remove(day.date, index);
-        onUpdate();
-        pause();
+    function delWater(index : number, water : number) {
+        onAction('confirm', {
+            content: `Excluir ${ water } ml de água?`,
+            onConfirm: () => {
+                remove(day.date, index);
+                onUpdate();
+                pause();
+            }
+        });
     }
 
     return <>
@@ -103,7 +121,7 @@ export default function Main({ update = 0, onUpdate = () => {} } : CardProps) {
 
         <ProgressBar
             percentageValue={ porcent }
-            color={ porcent < 40 ? 'red' : porcent < 80 ? 'yellow' : 'green' }
+            color={ porcent < 50 ? 'red' : porcent < 100 ? 'yellow' : 'green' }
             marginTop="mt-8"
         />
 
@@ -154,7 +172,7 @@ export default function Main({ update = 0, onUpdate = () => {} } : CardProps) {
                             <ButtonInline
                                 color='red'
                                 text='X'
-                                onClick={ () => delWater(index) }
+                                onClick={ () => delWater(index, data.v) }
                                 disabled={ wait }
                             />
                         </Flex>

@@ -1,6 +1,7 @@
 import {
     Action,
-    ModalProps
+    ConfimProps,
+    PromptProps
 } from './support/types';
 
 import {
@@ -30,7 +31,7 @@ export default function Dashboard() {
 
     const [ update, setUpdate ] = useState<number>(0);
 
-    const [ confirm, setConfirm ] = useState<ModalProps>({
+    const [ confirm, setConfirm ] = useState<ConfimProps>({
         show: false,
         title: 'Confirmar',
         content: '',
@@ -38,18 +39,21 @@ export default function Dashboard() {
         onConfirm: () => {}
     });
 
-    const [ prompt, setPrompt ] = useState<ModalProps>({
+    const [ prompt, setPrompt ] = useState<PromptProps>({
         show: false,
         title: 'Informar',
         content: '',
-        onHide: () => setPrompt(confirm => ({ ...confirm, show: false })),
+        value: '',
+        placeholder: '',
+        onHide: () => setPrompt(prompt => ({ ...prompt, show: false })),
+        onChange: value => value,
         onConfirm: () => {}
     })
 
     const action : Action = (type, payload) => {
         switch(type) {
-            case 'confirm': setConfirm(confirm => ({ ...confirm, ...payload, show: true })); break;
-            case 'prompt':  setPrompt(prompt => ({ ...prompt, ...payload, show: true }));    break;
+            case 'confirm': setConfirm(confirm => ({ ...confirm, ...payload as ConfimProps, show: true })); break;
+            case 'prompt':  setPrompt(prompt => ({ ...prompt, ...payload as PromptProps, show: true }));    break;
         }
     }
 

@@ -44,7 +44,7 @@ export default function Chart({ update = 0, onUpdate = () => {}, onAction = () =
 
     function reset() {
         onAction('confirm', {
-            content: 'Tem certeza que deseja apagar tudo?',
+            content: 'Tem certeza que deseja apagar todas as informações?',
             onConfirm: () => {
                 resetDataSet();
                 onUpdate();
