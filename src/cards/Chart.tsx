@@ -26,7 +26,8 @@ import {
     getDataSet,
     getFillDataSet,
     getSettings,
-    resetDataSet
+    resetDataSet,
+    saveSettings
 } from '../support/data';
 
 import {
@@ -35,12 +36,15 @@ import {
 
 export default function Chart({ update = 0, onUpdate = () => {}, onAction = () => {} } : CardProps) {
 
-    const { goal } = getSettings();
+    const { goal, chart } = getSettings();
 
-    const [ days, setDays ] = useState<number>(7);
+    const [ days, setDays ] = useState<number>(chart);
     const [ data, setData ] = useState<DataSet>([]);
 
-    useEffect(() => setData(days > 0 ? getFillDataSet(days) : getDataSet()), [ days, update ]);
+    useEffect(() => {
+        setData(days > 0 ? getFillDataSet(days) : getDataSet());
+        saveSettings({ chart : days });
+    }, [ days, update ]);
 
     function reset() {
         onAction('confirm', {

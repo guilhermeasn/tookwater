@@ -33,6 +33,7 @@ export type PromptProps = {
 export type Settings = {
     goal  : number;
     water : number;
+    chart : number;
 }
 
 export type DataSet = Day[];

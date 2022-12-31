@@ -1,10 +1,11 @@
 import { PromptProps } from "../support/types";
 import { TextInput } from "@tremor/react";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Prompt(props : PromptProps) {
 
     const [ value, setValue ] = useState<string>(props.value);
+    useEffect(() => setValue(props.value), [ props.value ]);
 
     function submit(event : React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
