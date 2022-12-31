@@ -26,32 +26,34 @@ import {
     getDataSet,
     getFillDataSet,
     getSettings,
-    resetDataSet
+    resetDataSet,
+    saveSettings
 } from '../support/data';
 
 import {
     GrLineChart
 } from "react-icons/gr";
 
-export default function Chart({ update = 0, onUpdate = () => {} } : CardProps) {
+export default function Chart({ update = 0, onUpdate = () => {}, onAction = () => {} } : CardProps) {
 
-    const { goal } = getSettings();
+    const { goal, chart } = getSettings();
 
-    const [ days, setDays ] = useState<number>(7);
+    const [ days, setDays ] = useState<number>(chart);
     const [ data, setData ] = useState<DataSet>([]);
 
-    useEffect(() => setData(days > 0 ? getFillDataSet(days) : getDataSet()), [ days, update ]);
+    useEffect(() => {
+        setData(days > 0 ? getFillDataSet(days) : getDataSet());
+        saveSettings({ chart : days });
+    }, [ days, update ]);
 
     function reset() {
-
-        // eslint-disable-next-line no-restricted-globals
-        if(confirm('Tem certeza que deseja apagar tudo?')) {
-
-            resetDataSet();
-            onUpdate();
-            
-        }
-
+        onAction('confirm', {
+            content: 'Tem certeza que deseja apagar todas as informações?',
+            onConfirm: () => {
+                resetDataSet();
+                onUpdate();
+            }
+        });
     }
 
     return <>

@@ -16,7 +16,8 @@ export function getSettings() : Settings {
 
     const defaultSettings : Settings = {
         goal: 2500,
-        water: 0
+        water: 0,
+        chart: 7
     }
 
     try {
@@ -39,8 +40,9 @@ export function getSettings() : Settings {
 
 }
 
-export function saveSettings(settings : Settings) : void {
-    localStorage.setItem('settings', JSON.stringify(settings));
+export function saveSettings(settings : Partial<Settings>) : void {
+    const stored = getSettings();
+    localStorage.setItem('settings', JSON.stringify({ ...stored, ...settings }));
 }
 
 export function insert(water : number) : Day {

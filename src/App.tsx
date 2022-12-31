@@ -1,4 +1,10 @@
 import {
+    Action,
+    ConfimProps,
+    PromptProps
+} from './support/types';
+
+import {
     Card,
     Title,
     Text,
@@ -13,12 +19,43 @@ import Chart from './cards/Chart';
 
 import { useState } from 'react';
 import { GoLogoGithub } from 'react-icons/go';
+
 import DevIcon from './support/gndevbr';
+
+import Confirm from './modals/Confirm';
+import Prompt from './modals/Prompt';
 
 export default function Dashboard() {
 
     const classSection = 'bg-slate-50 m-0 px-6 sm:px-12 md:px-18 lg:px-24';
+
     const [ update, setUpdate ] = useState<number>(0);
+
+    const [ confirm, setConfirm ] = useState<ConfimProps>({
+        show: false,
+        title: 'Confirmar',
+        content: '',
+        onHide: () => setConfirm(confirm => ({ ...confirm, show: false })),
+        onConfirm: () => {}
+    });
+
+    const [ prompt, setPrompt ] = useState<PromptProps>({
+        show: false,
+        title: 'Informar',
+        content: '',
+        value: '',
+        placeholder: '',
+        onHide: () => setPrompt(prompt => ({ ...prompt, show: false })),
+        onChange: value => value,
+        onConfirm: () => {}
+    })
+
+    const action : Action = (type, payload) => {
+        switch(type) {
+            case 'confirm': setConfirm(confirm => ({ ...confirm, ...payload as ConfimProps, show: true })); break;
+            case 'prompt':  setPrompt(prompt => ({ ...prompt, ...payload as PromptProps, show: true }));    break;
+        }
+    }
 
     return <>
 
@@ -52,6 +89,7 @@ export default function Dashboard() {
                     <Main
                         update={ update }
                         onUpdate={ () => setUpdate(update => update + 1)}
+                        onAction={ action }
                     />
                 </Card>
                 
@@ -59,6 +97,7 @@ export default function Dashboard() {
                     <Data
                         update={ update }
                         onUpdate={ () => setUpdate(update => update + 1)}
+                        onAction={ action }
                     />
                 </Card>
 
@@ -68,6 +107,7 @@ export default function Dashboard() {
                 <Chart
                     update={ update }
                     onUpdate={ () => setUpdate(update => update + 1)}
+                    onAction={ action }
                 />
             </Card>
 
@@ -91,6 +131,9 @@ export default function Dashboard() {
             </Flex>
 
         </footer>
+
+        <Confirm { ...confirm } />
+        <Prompt { ...prompt } />
 
     </>;
 
