@@ -86,7 +86,8 @@ export default function Main({ update = 0, onUpdate = () => {}, onAction = () =>
         setTimeout(() => setWait(false), 1000);
     }
 
-    function addWater() {
+    function addWater(event : React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
         insert(settings.water);
         onUpdate();
         pause();
@@ -125,7 +126,7 @@ export default function Main({ update = 0, onUpdate = () => {}, onAction = () =>
             marginTop="mt-8"
         />
 
-        <div className='my-5 p-5 bg-slate-500 rounded'>
+        <form onSubmit={ addWater } className='my-5 p-5 bg-slate-500 rounded'>
 
             <TextInput
                 name='water'
@@ -144,14 +145,14 @@ export default function Main({ update = 0, onUpdate = () => {}, onAction = () =>
                     icon={ CgGlassAlt }
                     importance="primary"
                     text="Adicionar"
-                    onClick={ addWater }
+                    type='submit'
                     disabled={ settings.water === 0 }
                     loading={ wait }
                 />
 
             </Flex>
 
-        </div>
+        </form>
 
         { day.data.length > 0 && <>
 
