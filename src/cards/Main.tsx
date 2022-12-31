@@ -130,7 +130,7 @@ export default function Main({ update = 0, onUpdate = () => {}, onAction = () =>
 
             <TextInput
                 name='water'
-                value={ settings.water !== 0 ? settings.water.toLocaleString() : '' }
+                value={ settings.water !== 0 ? settings.water.toString() : '' }
                 onChange={ i => changeWater(i.currentTarget.value) }
                 placeholder="Digite a quantidade ..."
                 maxWidth="max-w-none"
