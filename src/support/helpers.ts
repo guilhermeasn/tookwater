@@ -4,11 +4,19 @@ import type {
 } from "./types";
 
 export function formatDateString(date : Date) : DateString {
-    return date.toISOString().replace(/T.*/, '') as DateString;
+    return `${ date.getFullYear() }-${ date.getMonth() + 1 }-${ date.getDate() }`;
 }
 
 export function nativeDate(date : DateString) : Date {
-    return new Date(`${ date }T12:00:00.000Z`);
+
+    const match = date.split('-');
+
+    return new Date(
+        parseInt(match[0]),
+        parseInt(match[1]) - 1,
+        parseInt(match[2])
+    );
+
 }
 
 export function sum(day : Day) : number {
