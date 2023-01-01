@@ -72,7 +72,7 @@ export default function Chart({ update = 0, onUpdate = () => {}, onAction = () =
             colors={[ 'sky', 'orange' ]}
             dataKey='dayweek'
             data={data.map(day => ({
-                dayweek: data.length < 10 ? dayWeek(day.date).substring(0, 3) : day.date.replace(/.*(\d{2}$)/, '$1'),
+                dayweek: data.length < 10 ? dayWeek(day.date).substring(0, 3) : day.date.replace(/^.*?(\d{1,2}$)/, '$1'),
                 Objetivo: goal,
                 Ingerido: sum(day)
             }))}
