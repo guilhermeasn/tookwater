@@ -14,7 +14,7 @@ import {
 import Confirm from './Confirm';
 import Prompt from './Prompt';
 
-export default function Modals<T extends keyof ActionModals>({ action } : { action ?: ActionData<T> }) {
+export default function Modals({ action } : { action ?: ActionData<keyof ActionModals> }) {
 
     const [ confirm, setConfirm ] = useState<ConfimProps>({
         show: false,
