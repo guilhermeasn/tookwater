@@ -1,6 +1,6 @@
 import type {
-    Action,
-    ModalsAction
+    ActionData,
+    ActionModals
 } from './support/types';
 
 import {
@@ -28,7 +28,7 @@ export default function Dashboard() {
     const classSection = 'bg-slate-50 m-0 px-6 sm:px-12 md:px-18 lg:px-24';
 
     const [ update, setUpdate ] = useState<number>(0);
-    const [ action, setAction ] = useState<Action<keyof ModalsAction>>();
+    const [ action, setAction ] = useState<ActionData<keyof ActionModals>>();
 
     return <>
 

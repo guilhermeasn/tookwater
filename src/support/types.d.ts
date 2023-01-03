@@ -1,20 +1,20 @@
 export type CardProps = {
     update   ?: number;
     onUpdate ?: () => void;
-    onAction ?: OnAction;
+    onAction ?: Action;
 }
 
-export type OnAction = <T extends keyof ModalsAction>(
+export type Action = <T extends keyof ActionModals>(
     type    : T,
-    payload : ModalsAction[T]
+    payload : ActionModals[T]
 ) => void;
 
-export type Action<T extends keyof ModalsAction> = {
+export type ActionData<T extends keyof ActionModals> = {
     type : T;
-    payload : ModalsAction[T];
+    payload : ActionModals[T];
 }
 
-export type ModalsAction = {
+export type ActionModals = {
     confirm: Partial<Omit<ConfimProps, 'show' | 'onHide'>>;
     prompt:  Partial<Omit<PromptProps, 'show' | 'onHide'>>;
 };

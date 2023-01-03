@@ -1,8 +1,8 @@
 import type {
     Action,
+    ActionData,
+    ActionModals,
     ConfimProps,
-    ModalsAction,
-    OnAction,
     PromptProps
 } from '../support/types';
 
@@ -14,7 +14,7 @@ import {
 import Confirm from './Confirm';
 import Prompt from './Prompt';
 
-export default function Modals<T extends keyof ModalsAction>({ action } : { action ?: Action<T> }) {
+export default function Modals<T extends keyof ActionModals>({ action } : { action ?: ActionData<T> }) {
 
     const [ confirm, setConfirm ] = useState<ConfimProps>({
         show: false,
@@ -35,7 +35,7 @@ export default function Modals<T extends keyof ModalsAction>({ action } : { acti
         onConfirm: () => {}
     });
 
-    const onAction : OnAction = (type, payload) => {
+    const onAction : Action = (type, payload) => {
         switch(type) {
             case 'confirm': setConfirm(confirm => ({ ...confirm, ...payload as ConfimProps, show: true })); break;
             case 'prompt':  setPrompt(prompt => ({ ...prompt, ...payload as PromptProps, show: true }));    break;
