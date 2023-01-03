@@ -1,7 +1,6 @@
-import {
+import type {
     Action,
-    ConfimProps,
-    PromptProps
+    ModalsAction
 } from './support/types';
 
 import {
@@ -13,49 +12,23 @@ import {
     Divider
 } from '@tremor/react';
 
-import Main from './cards/Main';
-import Data from './cards/Data';
-import Chart from './cards/Chart';
+import {
+    Main,
+    Data,
+    Chart
+} from './cards';
 
 import { useState } from 'react';
 import { GoLogoGithub } from 'react-icons/go';
-
 import DevIcon from './support/gndevbr';
-
-import Confirm from './modals/Confirm';
-import Prompt from './modals/Prompt';
+import Modals from './modals';
 
 export default function Dashboard() {
 
     const classSection = 'bg-slate-50 m-0 px-6 sm:px-12 md:px-18 lg:px-24';
 
     const [ update, setUpdate ] = useState<number>(0);
-
-    const [ confirm, setConfirm ] = useState<ConfimProps>({
-        show: false,
-        title: 'Confirmar',
-        content: '',
-        onHide: () => setConfirm(confirm => ({ ...confirm, show: false })),
-        onConfirm: () => {}
-    });
-
-    const [ prompt, setPrompt ] = useState<PromptProps>({
-        show: false,
-        title: 'Informar',
-        content: '',
-        value: '',
-        placeholder: '',
-        onHide: () => setPrompt(prompt => ({ ...prompt, show: false })),
-        onChange: value => value,
-        onConfirm: () => {}
-    })
-
-    const action : Action = (type, payload) => {
-        switch(type) {
-            case 'confirm': setConfirm(confirm => ({ ...confirm, ...payload as ConfimProps, show: true })); break;
-            case 'prompt':  setPrompt(prompt => ({ ...prompt, ...payload as PromptProps, show: true }));    break;
-        }
-    }
+    const [ action, setAction ] = useState<Action<keyof ModalsAction>>();
 
     return <>
 
@@ -89,7 +62,7 @@ export default function Dashboard() {
                     <Main
                         update={ update }
                         onUpdate={ () => setUpdate(update => update + 1)}
-                        onAction={ action }
+                        onAction={ (type, payload) => setAction({ type, payload }) }
                     />
                 </Card>
                 
@@ -97,7 +70,7 @@ export default function Dashboard() {
                     <Data
                         update={ update }
                         onUpdate={ () => setUpdate(update => update + 1)}
-                        onAction={ action }
+                        onAction={ (type, payload) => setAction({ type, payload }) }
                     />
                 </Card>
 
@@ -107,7 +80,7 @@ export default function Dashboard() {
                 <Chart
                     update={ update }
                     onUpdate={ () => setUpdate(update => update + 1)}
-                    onAction={ action }
+                    onAction={ (type, payload) => setAction({ type, payload }) }
                 />
             </Card>
 
@@ -132,8 +105,7 @@ export default function Dashboard() {
 
         </footer>
 
-        <Confirm { ...confirm } />
-        <Prompt { ...prompt } />
+        <Modals action={ action } />
 
     </>;
 

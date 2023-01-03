@@ -1,15 +1,23 @@
 export type CardProps = {
     update   ?: number;
     onUpdate ?: () => void;
-    onAction ?: Action;
+    onAction ?: OnAction;
 }
 
-export type Action = <T extends 'confirm' | 'prompt'>(
+export type OnAction = <T extends keyof ModalsAction>(
     type    : T,
-    payload : T extends 'confirm'
-        ? Partial<Omit<ConfimProps, 'show' | 'onHide'>>
-        : Partial<Omit<PromptProps, 'show' | 'onHide'>>
+    payload : ModalsAction[T]
 ) => void;
+
+export type Action<T extends keyof ModalsAction> = {
+    type : T;
+    payload : ModalsAction[T];
+}
+
+export type ModalsAction = {
+    confirm: Partial<Omit<ConfimProps, 'show' | 'onHide'>>;
+    prompt:  Partial<Omit<PromptProps, 'show' | 'onHide'>>;
+};
 
 export type ConfimProps = {
     show      : boolean;
