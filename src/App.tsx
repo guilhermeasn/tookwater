@@ -1,6 +1,5 @@
 import type {
-    ActionData,
-    ActionModals
+    ActionData
 } from './support/types';
 
 import {
@@ -20,15 +19,16 @@ import {
 
 import { useState } from 'react';
 import { GoLogoGithub } from 'react-icons/go';
-import DevIcon from './support/gndevbr';
+
 import Modals from './modals';
+import DevIcon from './support/gndevbr';
 
 export default function Dashboard() {
 
     const classSection = 'bg-slate-50 m-0 px-6 sm:px-12 md:px-18 lg:px-24';
 
     const [ update, setUpdate ] = useState<number>(0);
-    const [ action, setAction ] = useState<ActionData<keyof ActionModals>>();
+    const [ action, setAction ] = useState<ActionData>();
 
     return <>
 

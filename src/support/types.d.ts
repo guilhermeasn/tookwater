@@ -9,7 +9,7 @@ export type Action = <T extends keyof ActionModals>(
     payload : ActionModals[T]
 ) => void;
 
-export type ActionData<T extends keyof ActionModals> = {
+export type ActionData<T extends keyof ActionModals = keyof ActionModals> = {
     type : T;
     payload : ActionModals[T];
 }

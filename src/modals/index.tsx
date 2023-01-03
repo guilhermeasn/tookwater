@@ -1,7 +1,6 @@
 import type {
     Action,
     ActionData,
-    ActionModals,
     ConfimProps,
     PromptProps
 } from '../support/types';
@@ -14,7 +13,7 @@ import {
 import Confirm from './Confirm';
 import Prompt from './Prompt';
 
-export default function Modals({ action } : { action ?: ActionData<keyof ActionModals> }) {
+export default function Modals({ action } : { action ?: ActionData }) {
 
     const [ confirm, setConfirm ] = useState<ConfimProps>({
         show: false,
